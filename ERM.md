@@ -5,28 +5,28 @@
 - pais
 
 ## Conta
+- id
 - tipo (poupança, corrente, investimento)
 - valorConta
-- id
 - numeroConta
 - nomeDono
 - moeda (BRL, USD, EUR, etc)
-- bancoID
+- **Banco**
 
 ## Cartao
 - id
 - vencimento
 - limite
-- contaID
+- **Conta**
 
 ## Transacao
 - id
 - descricao
 - moeda
-- contaID
+- **Conta**
 - tipo (credito, debito)
 - status (completeda, executando, completada)
-- cartaoID
+- **Cartao**
 - data
 - valor
 - categoria (Transferência, Depósito, Saque, etc)
@@ -36,7 +36,7 @@
 - nomeAtivo
 - total
 - moeda
-- contaID
+- **Conta**
 - tipoAtivo (Tesouro, Ação, FII, etc)
 - quantidade
 - valorTotalAtivo

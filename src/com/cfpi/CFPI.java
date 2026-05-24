@@ -8,11 +8,9 @@ public class CFPI {
 	Dotenv dotenv = new Dotenv();
 
 	try {
-	    System.out.println("STARTING APPLICATION...");
 	    dotenv.load();
-	    System.out.println("FINISHED APPLICATION");
 	} catch (IOException e) {
-	    System.out.printf("ERROR: %s%n.", e);
+	    System.out.printf("Failed to load env file: %s%n.", e);
 	}
     }
 }

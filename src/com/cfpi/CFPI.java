@@ -1,16 +1,17 @@
 package com.cfpi;
 
-import com.cfpi.library.dotenv.Dotenv;
-import java.io.IOException;
+import com.cfpi.dominio.arraydinamico.ArrayDinamico;
 
 public class CFPI {
     public static void main(String[] args) {
-	Dotenv dotenv = new Dotenv();
+	ArrayDinamico<Integer> ad = new ArrayDinamico<>(Integer.class, 3);
 
-	try {
-	    dotenv.load();
-	} catch (IOException e) {
-	    System.out.printf("Failed to load env file: %s%n.", e);
+	ad.inserir(1);
+	ad.inserir(2);
+	ad.inserir(3);
+
+	for (int i : ad.getArr()){
+	    System.out.println(i);
 	}
     }
 }

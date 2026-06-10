@@ -1,22 +1,24 @@
-public abstract class Banco {
+package com.cfpi.dominio.entidades.objetivo;
+
+public class Objetivo {
 
     private static int contadorId = 1;
 
     private int id;
     private String nome;
-    private String pais;
+    private double valor;
 
-    public Banco() {
+    public Objetivo() {
         this.id = contadorId++;
     }
 
-    public Banco(String nome, String pais) {
+    public Objetivo(String nome, double valor) {
         this.id = contadorId++;
         this.nome = nome;
-        this.pais = pais;
+        this.valor = valor;
     }
 
-    public Banco(int id) {
+    public Objetivo(int id) {
         this.id = id;
     }
 
@@ -34,10 +36,10 @@ public abstract class Banco {
         this.nome = nome;
     }
 
-    public String getPais() {
-        return pais;
+    public double getValor() {
+        return valor;
     }
-    public void setPais(String pais) {
-        this.pais = pais;
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 }

@@ -1,35 +1,37 @@
+package com.cfpi.dominio.entidades.investimento;
+
+import com.cfpi.dominio.entidades.conta.Conta;
+
 public abstract class Investimento {
 
     private static int contadorId = 1;
 
     private int id;
     private String nomeAtivo;
-    private double total;
-    private String moeda;
+    private double valor;
     private Conta conta;
     private double quantidade;
     private double valorTotalAtivo;
     private double imposto;
     private String data;
     private double valorRealizado;
-    private String tipoAcao;
+    private String operacao;
 
     public Investimento() {
         this.id = contadorId++;
     }
 
-    public Investimento(String nomeAtivo, double total, String moeda, Conta conta, double quantidade, double valorTotalAtivo, double imposto, String data, double valorRealizado, String tipoAcao) {
+    public Investimento(String nomeAtivo, double valor, Conta conta, double quantidade, double valorTotalAtivo, double imposto, String data, double valorRealizado, String operacao) {
         this.id = contadorId++;
         this.nomeAtivo = nomeAtivo;
-        this.total = total;
-        this.moeda = moeda;
+        this.valor = valor;
         this.conta = conta;
         this.quantidade = quantidade;
         this.valorTotalAtivo = valorTotalAtivo;
         this.imposto = imposto;
         this.data = data;
         this.valorRealizado = valorRealizado;
-        this.tipoAcao = tipoAcao;
+        this.operacao = operacao;
     }
 
     public Investimento(int id) {
@@ -50,18 +52,11 @@ public abstract class Investimento {
         this.nomeAtivo = nomeAtivo;
     }
 
-    public double getTotal() {
-        return total;
+    public double getValor() {
+        return valor;
     }
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public String getMoeda() {
-        return moeda;
-    }
-    public void setMoeda(String moeda) {
-        this.moeda = moeda;
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 
     public Conta getConta() {
@@ -106,10 +101,10 @@ public abstract class Investimento {
         this.valorRealizado = valorRealizado;
     }
 
-    public String getTipoAcao() {
-        return tipoAcao;
+    public String getOperacao() {
+        return operacao;
     }
-    public void setTipoAcao(String tipoAcao) {
-        this.tipoAcao = tipoAcao;
+    public void setOperacao(String operacao) {
+        this.operacao = operacao;
     }
 }

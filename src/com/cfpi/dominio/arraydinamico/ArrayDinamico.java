@@ -2,7 +2,9 @@ package com.cfpi.dominio.arraydinamico;
 
 import java.lang.reflect.Array;
 
-public class ArrayDinamico<T> {
+import com.cfpi.dominio.Identificavel;
+
+public class ArrayDinamico<T extends Identificavel> implements CRUD<T> {
     private int tamanho;
     private int capacidade;
     private Object[] arr;
@@ -26,6 +28,7 @@ public class ArrayDinamico<T> {
         arr = arr2;
     }
 
+    @Override
     public boolean inserir(T item) {
         if (tamanho >= capacidade) {
             this.expandir();
@@ -36,6 +39,7 @@ public class ArrayDinamico<T> {
 
     }
 
+    @Override
     public boolean atualizar(int idx, T novoItem) {
         if (idx >= tamanho || idx < 0) {
             return false;
@@ -44,6 +48,7 @@ public class ArrayDinamico<T> {
 	return true;
     }
 
+    @Override
     public boolean remover(int idx) {
         if (idx >= tamanho || idx < 0) {
             return false;
@@ -51,6 +56,7 @@ public class ArrayDinamico<T> {
         for (int i = idx; i < tamanho - 1; i++) {
             arr[i] = arr[i + 1];
         }
+        tamanho--;
 	return true;
     }
 
@@ -59,5 +65,18 @@ public class ArrayDinamico<T> {
 	T[] castedArray = (T[]) Array.newInstance(tipo, tamanho);
 	System.arraycopy(arr, 0, castedArray, 0, tamanho);
 	return castedArray;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public T pesquisar(T entidade) {
+        int id = entidade.getId();
+        for (int i = 0; i < tamanho; i++) {
+            T item = (T) arr[i];
+            if (item.getId() == id) {
+                return item;
+            }
+        }
+        return null;
     }
 }

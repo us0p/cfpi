@@ -10,11 +10,16 @@ public class VGBL extends Investimento {
         super();
     }
 
-    public VGBL(String nomeAtivo, double valor, Conta conta, double quantidade, double valorTotalAtivo, double imposto, String data, double valorRealizado, String operacao) {
-        super(nomeAtivo, valor, conta, quantidade, valorTotalAtivo, imposto, data, valorRealizado, operacao);
+    public VGBL(String nomeAtivo, double valor, Conta conta, double quantidade, double imposto, String data, double valorRealizado, String operacao) {
+        super(nomeAtivo, valor, conta, quantidade, imposto, data, valorRealizado, operacao);
     }
 
     public VGBL(int id) {
         super(id);
+    }
+
+    @Override
+    public double getImpostoPadrao() {
+        return IMPOSTO_PADRAO;
     }
 }

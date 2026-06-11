@@ -1,56 +1,79 @@
 # Modelo de Relacionamento de Entidades - (ERM)
-## Banco
-- nome
-- id
-- pais
 
-## Conta
-- id
-- tipo (poupança, corrente, investimento)
-- valorConta
-- numeroConta
-- nomeDono
-- moeda (BRL, USD, EUR, etc)
-- limiteCredito
-- **Banco**
+```mermaid
+erDiagram
+    USUARIO {
+        int id
+        string nome
+        string cpf
+        string telefone
+        string dataNascimento
+    }
 
-## Transacao
-- id
-- descricao
-- **Conta**
-- data
-- valor
-- categoria (Transferência, Depósito, Saque, etc)
-- subtipos:
-  - Debito: tipo (credito, avista)
-  - Credito
+    BANCO {
+        int id
+        string nome
+        int codigo
+    }
 
-## Investimento
-- id
-- nomeAtivo
-- valor
-- **Conta**
-- quantidade
-- valorTotalAtivo
-- imposto
-- data
-- valorRealizado (valor do lucro/prejuizo em caso de venda de ativos)
-- operacao (compra, venda)
-- subtipos (com IMPOSTO_PADRAO sobre o ganho na venda do ativo):
-  - Acao: 15%
-  - CDB: 15%
-  - CRA: 0% (isento)
-  - CRI: 0% (isento)
-  - Cripto: 15%
-  - DEB: 15%
-  - FII: 17,5%
-  - LCA: 0% (isento)
-  - LCI: 0% (isento)
-  - PGBL: 15%
-  - TesouroDireto: 15%
-  - VGBL: 15%
+    CONTA {
+        int id
+        string tipo "poupanca, corrente, investimento"
+        double valorConta
+        string numeroConta
+        string moeda "BRL, USD, EUR, etc"
+        double limiteCredito
+        double limiteCreditoUtilizado
+    }
 
-## Objetivo
-- id
-- nome
-- valor
+    OBJETIVO {
+        int id
+        string nome
+        double valor
+    }
+
+    TRANSACAO {
+        int id
+        string descricao
+        string data
+        double valor
+        string categoria "Transferencia, Deposito, Saque, etc"
+    }
+
+    INVESTIMENTO {
+        int id
+        string nomeAtivo
+        double valor
+        double quantidade
+        double imposto
+        string data
+        double valorRealizado
+        string operacao "compra, venda"
+    }
+
+    USUARIO ||--o{ OBJETIVO : possui
+    USUARIO o|--o{ CONTA : possui
+    USUARIO }o--o{ BANCO : "possui contas em"
+    BANCO o|--o{ CONTA : "associada a"
+    CONTA o|--o{ TRANSACAO : registra
+    CONTA o|--o{ INVESTIMENTO : registra
+```
+
+## Subtipos de Transacao
+- Debito: tipo (credito, avista)
+- Credito
+
+## Subtipos de Investimento
+(com IMPOSTO_PADRAO sobre o ganho na venda do ativo)
+- Acao: 15%
+- CDB: 15%
+- CRA: 0% (isento)
+- CRI: 0% (isento)
+- Cripto: 15%
+- DEB: 15%
+- FII: 17,5%
+- LCA: 0% (isento)
+- LCI: 0% (isento)
+- PGBL: 15%
+- TesouroDireto: 15%
+- VGBL: 15%

@@ -10,11 +10,16 @@ public class CDB extends Investimento {
         super();
     }
 
-    public CDB(String nomeAtivo, double valor, Conta conta, double quantidade, double valorTotalAtivo, double imposto, String data, double valorRealizado, String operacao) {
-        super(nomeAtivo, valor, conta, quantidade, valorTotalAtivo, imposto, data, valorRealizado, operacao);
+    public CDB(String nomeAtivo, double valor, Conta conta, double quantidade, double imposto, String data, double valorRealizado, String operacao) {
+        super(nomeAtivo, valor, conta, quantidade, imposto, data, valorRealizado, operacao);
     }
 
     public CDB(int id) {
         super(id);
+    }
+
+    @Override
+    public double getImpostoPadrao() {
+        return IMPOSTO_PADRAO;
     }
 }

@@ -112,3 +112,4 @@ gh pr create --base develop --head minha-branch --title "Título do PR" --body "
 Após a abertura, aguarde a revisão e aprovação para que o PR seja mesclado na
 `develop`.
 
+exemplo pra commit

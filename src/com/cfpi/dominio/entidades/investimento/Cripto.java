@@ -10,11 +10,16 @@ public class Cripto extends Investimento {
         super();
     }
 
-    public Cripto(String nomeAtivo, double valor, Conta conta, double quantidade, double valorTotalAtivo, double imposto, String data, double valorRealizado, String operacao) {
-        super(nomeAtivo, valor, conta, quantidade, valorTotalAtivo, imposto, data, valorRealizado, operacao);
+    public Cripto(String nomeAtivo, double valor, Conta conta, double quantidade, double imposto, String data, double valorRealizado, String operacao) {
+        super(nomeAtivo, valor, conta, quantidade, imposto, data, valorRealizado, operacao);
     }
 
     public Cripto(int id) {
         super(id);
+    }
+
+    @Override
+    public double getImpostoPadrao() {
+        return IMPOSTO_PADRAO;
     }
 }

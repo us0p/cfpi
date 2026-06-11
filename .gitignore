@@ -1,4 +1,5 @@
 .env
 out
+out-test
 .idea
 cfpi.iml

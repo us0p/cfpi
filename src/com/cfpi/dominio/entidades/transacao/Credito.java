@@ -2,12 +2,16 @@ package com.cfpi.dominio.entidades.transacao;
 
 import com.cfpi.dominio.entidades.conta.Conta;
 import com.cfpi.dominio.excecoes.ValidacaoException;
+import java.util.List;
 
 public class Credito extends Transacao {
+
+  private static final List<String> CATEGORIAS_VALIDAS = List.of("pagamento", "rendimento");
 
     public Credito() {
         super();
     }
+
 
     /**
      * Cria um crédito com os dados informados.
@@ -31,13 +35,14 @@ public class Credito extends Transacao {
      */
     public Credito(String descricao, Conta conta, String data, double valor, String categoria) {
         super(descricao, conta, data, valor, categoria);
-        aplicarEfeito();
+        setCategoria(categoria);
+        aplicarEfeito();         
     }
 
     public Credito(int id) {
         super(id);
     }
-
+    
     /**
      * Define a categoria do crédito.
      *
@@ -49,8 +54,12 @@ public class Credito extends Transacao {
      * @throws ValidacaoException se {@code categoria} for inválida. (a ser
      *         lançada quando a validação for implementada)
      */
-    @Override
-    public void setCategoria(String categoria) {
+    
+      public void setCategoria(String categoria) {
+    
+        if (categoria == null || !CATEGORIAS_VALIDAS.contains(categoria.trim().toLowerCase())) {
+            throw new ValidacaoException("Categoria inválida. Use: pagamento ou rendimento.");
+        }
         super.setCategoria(categoria);
     }
 
@@ -62,18 +71,21 @@ public class Credito extends Transacao {
      * {@code categoria} (que é apenas classificação).</p>
      */
     @Override
-    public void aplicarEfeito() {
-        // TODO: a implementar - somar valor a valorConta da conta
-        // associada.
+     public void aplicarEfeito() {
+        Conta conta = getConta();
+        if (conta != null) {
+            conta.setValorConta(conta.getValorConta() + getValor());
+        }
     }
-
     /**
      * Reverte o efeito previamente aplicado por {@link #aplicarEfeito()},
      * subtraindo {@code valor} de {@code valorConta} da conta associada.
      */
     @Override
     public void reverterEfeito() {
-        // TODO: a implementar - subtrair valor de valorConta da conta
-        // associada.
+        Conta conta = getConta();
+        if (conta != null) {
+            conta.setValorConta(conta.getValorConta() - getValor());
+        }
     }
 }

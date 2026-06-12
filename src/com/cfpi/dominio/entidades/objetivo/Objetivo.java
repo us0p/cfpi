@@ -118,6 +118,21 @@ public class Objetivo implements Identificavel {
      *         for implementada)
      */
     public void setNome(String nome) {
+            if (getUsuario() != null) {
+        String nomeTratado = nome.trim();
+
+        for (Objetivo obj : getUsuario().getObjetivos()) {
+            if (obj.getId() != this.id &&
+                obj.getNome() != null &&
+                obj.getNome().trim().equalsIgnoreCase(nomeTratado)) {
+
+                throw new RegraNegocioException(
+                    "Já existe outro objetivo com esse nome para este usuário."
+                );
+            }
+        }
+    }
+        
         this.nome = nome;
     }
 
@@ -136,6 +151,11 @@ public class Objetivo implements Identificavel {
      *         quando a validação for implementada)
      */
     public void setValor(double valor) {
+        // Validação: o valor deve ser maior que zero
+    if (valor <= 0) {
+        throw new ValidacaoException("O valor deve ser maior que zero. Valor fornecido: " + valor);
+        
+        }
         this.valor = valor;
     }
 

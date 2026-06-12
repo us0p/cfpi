@@ -179,6 +179,9 @@ public class Objetivo implements Identificavel {
      *         ser lançada quando a validação for implementada)
      */
     public void setUsuario(Usuario usuario) {
+        if (usuario == null) {
+            throw new ValidacaoException("O usuário não pode ser nulo.");
+        }
         this.usuario = usuario;
     }
 }

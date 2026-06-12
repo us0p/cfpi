@@ -54,10 +54,35 @@ public class Objetivo implements Identificavel {
         this.nome = nome;
         this.valor = valor;
         this.usuario = usuario;
+         // Validação do valor
+    if (valor <= 0) {
+        throw new ValidacaoException("O valor do objetivo deve ser maior que zero.");
+    }
 
-        if (usuario != null) {
-            usuario.adicionarObjetivo(this);
+    //Validação do usuário
+    if (usuario == null) {
+            throw new ValidacaoException(
+                "Usuário está nulo"
+            );
+            
         }
+
+    // Validação do nome duplicado
+    String nomeTratado = nome.trim();
+    Objetivo nomeExiste = usuario.pesquisarObjetivoPorNome(nomeTratado);
+    if (nomeExiste != null) {
+        throw new RegraNegocioException(
+            "Já existe um objetivo com o nome '" + nome + "' para este usuário."
+        );
+    }
+    
+            usuario.adicionarObjetivo(this);
+
+        
+        
+
+        
+
     }
 
     /**
@@ -100,6 +125,21 @@ public class Objetivo implements Identificavel {
      *         for implementada)
      */
     public void setNome(String nome) {
+            if (getUsuario() != null) {
+        String nomeTratado = nome.trim();
+
+        for (Objetivo obj : getUsuario().getObjetivos()) {
+            if (obj.getId() != this.id &&
+                obj.getNome() != null &&
+                obj.getNome().trim().equalsIgnoreCase(nomeTratado)) {
+
+                throw new RegraNegocioException(
+                    "Já existe outro objetivo com esse nome para este usuário."
+                );
+            }
+        }
+    }
+        
         this.nome = nome;
     }
 
@@ -118,6 +158,11 @@ public class Objetivo implements Identificavel {
      *         quando a validação for implementada)
      */
     public void setValor(double valor) {
+        // Validação: o valor deve ser maior que zero
+    if (valor <= 0) {
+        throw new ValidacaoException("O valor deve ser maior que zero. Valor fornecido: " + valor);
+        
+        }
         this.valor = valor;
     }
 
@@ -141,6 +186,9 @@ public class Objetivo implements Identificavel {
      *         ser lançada quando a validação for implementada)
      */
     public void setUsuario(Usuario usuario) {
+        if (usuario == null) {
+            throw new ValidacaoException("O usuário não pode ser nulo.");
+        }
         this.usuario = usuario;
     }
 }

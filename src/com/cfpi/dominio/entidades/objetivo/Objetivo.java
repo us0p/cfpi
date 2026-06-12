@@ -54,26 +54,33 @@ public class Objetivo implements Identificavel {
         this.nome = nome;
         this.valor = valor;
         this.usuario = usuario;
-
-        if (usuario != null) {
-            usuario.adicionarObjetivo(this);
-        }
-
-
          // Validação do valor
     if (valor <= 0) {
         throw new ValidacaoException("O valor do objetivo deve ser maior que zero.");
     }
 
+    //Validação do usuário
+    if (usuario == null) {
+            throw new ValidacaoException(
+                "Usuário está nulo"
+            );
+            
+        }
+
     // Validação do nome duplicado
     String nomeTratado = nome.trim();
-    boolean nomeExiste = usuario.getObjetivos();
-        anyMatch(obj -> obj.getNome().trim().equalsIgnoreCase(nomeTratado));
-    if (nomeExiste) {
+    Objetivo nomeExiste = usuario.pesquisarObjetivoPorNome(nomeTratado);
+    if (nomeExiste != null) {
         throw new RegraNegocioException(
             "Já existe um objetivo com o nome '" + nome + "' para este usuário."
         );
     }
+    
+            usuario.adicionarObjetivo(this);
+
+        
+        
+
         
 
     }

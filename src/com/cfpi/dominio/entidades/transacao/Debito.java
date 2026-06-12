@@ -2,8 +2,12 @@ package com.cfpi.dominio.entidades.transacao;
 
 import com.cfpi.dominio.entidades.conta.Conta;
 import com.cfpi.dominio.excecoes.ValidacaoException;
+import java.util.List;
 
 public class Debito extends Transacao {
+
+     private static final List<String> TIPOS_VALIDOS = List.of("credito", "avista");
+    private static final List<String> CATEGORIAS_VALIDAS = List.of("lazer", "mercado", "saude", "indeterminado", "investimentos", "banco");
 
     private String tipo;
 
@@ -38,11 +42,13 @@ public class Debito extends Transacao {
      *         {@code categoria} ou {@code tipo} forem inválidos. (a ser
      *         lançada quando a validação for implementada)
      */
-    public Debito(String descricao, Conta conta, String data, double valor, String categoria, String tipo) {
+     public Debito(String descricao, Conta conta, String data, double valor, String categoria, String tipo) {
         super(descricao, conta, data, valor, categoria);
-        this.tipo = tipo;
+        setCategoria(categoria); 
+        setTipo(tipo);           
         aplicarEfeito();
     }
+    
 
     public Debito(int id) {
         super(id);
@@ -64,7 +70,11 @@ public class Debito extends Transacao {
      *         lançada quando a validação for implementada)
      */
     public void setTipo(String tipo) {
-        this.tipo = tipo;
+    
+        if (tipo == null || !TIPOS_VALIDOS.contains(tipo.trim().toLowerCase())) {
+            throw new ValidacaoException("Tipo inválido. Use: credito ou avista.");
+        }
+        this.tipo = tipo.trim().toLowerCase();
     }
 
     /**
@@ -80,7 +90,11 @@ public class Debito extends Transacao {
      */
     @Override
     public void setCategoria(String categoria) {
-        super.setCategoria(categoria);
+        
+        if (categoria == null || !CATEGORIAS_VALIDAS.contains(categoria.trim().toLowerCase())) {
+            throw new ValidacaoException("Categoria inválida. Use: lazer, mercado, saude, indeterminado, investimentos ou banco.");
+        }
+        super.setCategoria(categoria.trim().toLowerCase());
     }
 
     /**
@@ -103,9 +117,25 @@ public class Debito extends Transacao {
      */
     @Override
     public void aplicarEfeito() {
-        // TODO: a implementar - aplicar o efeito deste débito sobre
-        // valorConta/limiteCreditoUtilizado da conta associada, conforme
-        // documentado acima.
+        Conta conta = getConta();
+        if (conta == null) return;
+
+        String cat = getCategoria() != null ? getCategoria().trim().toLowerCase() : "";
+        String tip = tipo != null ? tipo.trim().toLowerCase() : "";
+
+        if (cat.equals("banco")) {
+            
+            conta.setValorConta(conta.getValorConta() - getValor());
+            conta.setLimiteCreditoUtilizado(Math.max(0, conta.getLimiteCreditoUtilizado() - getValor()));
+
+        } else if (tip.equals("credito")) {
+            
+            conta.setLimiteCreditoUtilizado(conta.getLimiteCreditoUtilizado() + getValor());
+
+        } else {
+            
+            conta.setValorConta(conta.getValorConta() - getValor());
+        }
     }
 
     /**
@@ -115,7 +145,24 @@ public class Debito extends Transacao {
      */
     @Override
     public void reverterEfeito() {
-        // TODO: a implementar - reverter o efeito aplicado por
-        // aplicarEfeito() sobre a conta associada.
+        Conta conta = getConta();
+        if (conta == null) return;
+
+        String cat = getCategoria() != null ? getCategoria().trim().toLowerCase() : "";
+        String tip = tipo != null ? tipo.trim().toLowerCase() : "";
+
+        if (cat.equals("banco")) {
+            
+            conta.setValorConta(conta.getValorConta() + getValor());
+            conta.setLimiteCreditoUtilizado(conta.getLimiteCreditoUtilizado() + getValor());
+
+        } else if (tip.equals("credito")) {
+            
+            conta.setLimiteCreditoUtilizado(conta.getLimiteCreditoUtilizado() - getValor());
+
+        } else {
+            
+            conta.setValorConta(conta.getValorConta() + getValor());
+        }
     }
 }

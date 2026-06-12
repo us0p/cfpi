@@ -3,6 +3,9 @@ package com.cfpi.dominio.entidades.transacao;
 import com.cfpi.dominio.Identificavel;
 import com.cfpi.dominio.entidades.conta.Conta;
 import com.cfpi.dominio.excecoes.ValidacaoException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 
 public abstract class Transacao implements Identificavel {
 
@@ -15,9 +18,10 @@ public abstract class Transacao implements Identificavel {
     private double valor;
     private String categoria;
 
-    public Transacao() {
-        this.id = contadorId++;
-    }
+    
+   public Transacao (){
+    this.id= contadorId++;
+   }
 
     /**
      * Cria uma transação com os dados informados.
@@ -46,8 +50,8 @@ public abstract class Transacao implements Identificavel {
         this.id = contadorId++;
         this.descricao = descricao;
         this.conta = conta;
-        this.data = data;
-        this.valor = valor;
+        setValor(valor);   
+        setData(data);     
         this.categoria = categoria;
 
         if (conta != null) {
@@ -97,9 +101,20 @@ public abstract class Transacao implements Identificavel {
      *         inválido. (a ser lançada quando a validação for implementada)
      */
     public void setData(String data) {
+        
+        if (data == null || data.isBlank()) {
+            throw new ValidacaoException("A data não pode ser nula ou vazia.");
+        }
+
+        
+        try {
+            LocalDate.parse(data);
+        } catch (DateTimeParseException e) {
+            throw new ValidacaoException("Formato de data inválido. Use o formato yyyy-MM-dd.");
+        }
+
         this.data = data;
     }
-
     public double getValor() {
         return valor;
     }
@@ -116,7 +131,10 @@ public abstract class Transacao implements Identificavel {
      *         zero. (a ser lançada quando a validação for implementada)
      */
     public void setValor(double valor) {
-        this.valor = valor;
+    if (valor <= 0) {
+        throw new ValidacaoException("O valor da transação deve ser maior que zero.");
+    }
+    this.valor = valor;
     }
 
     public String getCategoria() {

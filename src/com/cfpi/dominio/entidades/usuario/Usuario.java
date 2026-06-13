@@ -7,6 +7,9 @@ import com.cfpi.dominio.entidades.objetivo.Objetivo;
 import com.cfpi.dominio.excecoes.RegraNegocioException;
 import com.cfpi.dominio.excecoes.ValidacaoException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 public class Usuario implements Identificavel {
 
     private static int contadorId = 1;
@@ -63,7 +66,13 @@ public class Usuario implements Identificavel {
      */
     public Usuario(String nome, String cpf, String telefone, String dataNascimento) {
         this.id = contadorId++;
-        this.nome = nome;
+
+        validarNome(nome);
+        validarCpf(cpf);
+        validarTelefone(telefone);
+        validarDataNascimento(dataNascimento);
+
+        this.nome = nome.trim();
         this.cpf = cpf;
         this.telefone = telefone;
         this.dataNascimento = dataNascimento;
@@ -81,6 +90,48 @@ public class Usuario implements Identificavel {
         this.objetivos = new ArrayDinamico<>(Objetivo.class, CAPACIDADE_INICIAL_OBJETIVOS);
         this.contas = new ArrayDinamico<>(Conta.class, CAPACIDADE_INICIAL_CONTAS);
     }
+
+    // -------------------------------------------------------------------------
+    // Métodos privados de validação
+    // -------------------------------------------------------------------------
+
+    private static void validarNome(String nome) {
+        if (nome == null || nome.trim().length() < 3) {
+            throw new ValidacaoException("O nome deve ter ao menos 3 caracteres.");
+        }
+        if (!nome.trim().matches("[\\p{L} ]+")) {
+            throw new ValidacaoException("O nome deve conter apenas letras e espaços.");
+        }
+    }
+
+    private static void validarCpf(String cpf) {
+        if (cpf == null || !cpf.matches("^\\d{11}$")) {
+            throw new ValidacaoException("O CPF deve conter exatamente 11 dígitos numéricos.");
+        }
+    }
+
+    private static void validarTelefone(String telefone) {
+        if (telefone == null || !telefone.matches("^\\d{11}$")) {
+            throw new ValidacaoException("O telefone deve conter exatamente 11 dígitos numéricos.");
+        }
+    }
+
+    private static void validarDataNascimento(String dataNascimento) {
+        if (dataNascimento == null) {
+            throw new ValidacaoException("A data de nascimento não pode ser nula.");
+        }
+        LocalDate data;
+        try {
+            data = LocalDate.parse(dataNascimento);
+        } catch (DateTimeParseException e) {
+            throw new ValidacaoException("A data de nascimento deve estar no formato yyyy-MM-dd.");
+        }
+        if (!data.isBefore(LocalDate.now())) {
+            throw new ValidacaoException("A data de nascimento deve ser anterior à data atual.");
+        }
+    }
+
+    // -------------------------------------------------------------------------
 
     @Override
     public int getId() {
@@ -106,7 +157,8 @@ public class Usuario implements Identificavel {
      *         lançada quando a validação for implementada)
      */
     public void setNome(String nome) {
-        this.nome = nome;
+        validarNome(nome);
+        this.nome = nome.trim();
     }
 
     public String getCpf() {
@@ -125,6 +177,7 @@ public class Usuario implements Identificavel {
      *         lançada quando a validação for implementada)
      */
     public void setCpf(String cpf) {
+        validarCpf(cpf);
         this.cpf = cpf;
     }
 
@@ -144,6 +197,7 @@ public class Usuario implements Identificavel {
      *         lançada quando a validação for implementada)
      */
     public void setTelefone(String telefone) {
+        validarTelefone(telefone);
         this.telefone = telefone;
     }
 
@@ -164,6 +218,7 @@ public class Usuario implements Identificavel {
      *         ser lançada quando a validação for implementada)
      */
     public void setDataNascimento(String dataNascimento) {
+        validarDataNascimento(dataNascimento);
         this.dataNascimento = dataNascimento;
     }
 
@@ -225,6 +280,7 @@ public class Usuario implements Identificavel {
      */
     public Objetivo pesquisarObjetivoPorId(int id) {
         for (Objetivo objetivo : objetivos.getArr()) {
+            if (objetivo == null) break;
             if (objetivo.getId() == id) {
                 return objetivo;
             }
@@ -249,6 +305,7 @@ public class Usuario implements Identificavel {
         }
         String alvo = nome.trim();
         for (Objetivo objetivo : objetivos.getArr()) {
+            if (objetivo == null) break;
             if (objetivo.getNome() != null && objetivo.getNome().trim().equalsIgnoreCase(alvo)) {
                 return objetivo;
             }
@@ -274,6 +331,7 @@ public class Usuario implements Identificavel {
      */
     public Conta pesquisarContaPorId(int id) {
         for (Conta conta : contas.getArr()) {
+            if (conta == null) break;
             if (conta.getId() == id) {
                 return conta;
             }
@@ -298,6 +356,7 @@ public class Usuario implements Identificavel {
         }
         String alvo = numeroConta.trim();
         for (Conta conta : contas.getArr()) {
+            if (conta == null) break;
             if (conta.getNumeroConta() != null && conta.getNumeroConta().trim().equals(alvo)) {
                 return conta;
             }
@@ -325,8 +384,27 @@ public class Usuario implements Identificavel {
      *         implementada)
      */
     public boolean removerConta(int id) {
-        // TODO: a implementar - localizar a conta pelo id, validar
-        // limiteCreditoUtilizado pendente e remover do ArrayDinamico.
-        return false;
+        Conta alvo = null;
+        int indice = -1;
+        Conta[] arr = contas.getArr();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == null) break;
+            if (arr[i].getId() == id) {
+                alvo = arr[i];
+                indice = i;
+                break;
+            }
+        }
+
+        if (alvo == null) {
+            return false;
+        }
+
+        if (alvo.getLimiteCreditoUtilizado() > 0) {
+            throw new RegraNegocioException(
+                    "Não é possível remover a conta pois há limite de crédito utilizado pendente.");
+        }
+
+        return contas.remover(indice);
     }
 }

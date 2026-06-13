@@ -5,6 +5,9 @@ import com.cfpi.dominio.entidades.conta.Conta;
 import com.cfpi.dominio.excecoes.RegraNegocioException;
 import com.cfpi.dominio.excecoes.ValidacaoException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 public abstract class Investimento implements Identificavel {
 
     private static int contadorId = 1;
@@ -76,16 +79,26 @@ public abstract class Investimento implements Identificavel {
      */
     public Investimento(String nomeAtivo, double valor, Conta conta, double quantidade, double imposto, String data, double valorRealizado, String operacao) {
         this.id = contadorId++;
-        this.nomeAtivo = nomeAtivo;
+
+        validarNomeAtivo(nomeAtivo);
+        validarValor(valor);
+        validarQuantidade(quantidade);
+        validarData(data);
+        validarOperacao(operacao);
+
+        this.nomeAtivo = nomeAtivo.trim();
         this.valor = valor;
         this.conta = conta;
         this.quantidade = quantidade;
         this.imposto = imposto;
         this.data = data;
         this.valorRealizado = valorRealizado;
-        this.operacao = operacao;
+        this.operacao = operacao.trim().toLowerCase();
 
         if (conta != null) {
+            if ("venda".equals(this.operacao)) {
+                verificarQuantidadeVenda(conta, this.nomeAtivo, this.quantidade);
+            }
             conta.adicionarInvestimento(this);
         }
 
@@ -95,6 +108,73 @@ public abstract class Investimento implements Identificavel {
     public Investimento(int id) {
         this.id = id;
     }
+
+    // -------------------------------------------------------------------------
+    // Métodos privados de validação
+    // -------------------------------------------------------------------------
+
+    private static void validarNomeAtivo(String nomeAtivo) {
+        if (nomeAtivo == null || nomeAtivo.trim().isEmpty()) {
+            throw new ValidacaoException("O nome do ativo não pode ser nulo ou vazio.");
+        }
+    }
+
+    private static void validarValor(double valor) {
+        if (valor <= 0) {
+            throw new ValidacaoException("O valor deve ser maior que zero.");
+        }
+    }
+
+    private static void validarQuantidade(double quantidade) {
+        if (quantidade <= 0) {
+            throw new ValidacaoException("A quantidade deve ser maior que zero.");
+        }
+    }
+
+    private static void validarData(String data) {
+        if (data == null) {
+            throw new ValidacaoException("A data não pode ser nula.");
+        }
+        try {
+            LocalDate.parse(data);
+        } catch (DateTimeParseException e) {
+            throw new ValidacaoException("A data deve estar no formato yyyy-MM-dd.");
+        }
+    }
+
+    private static void validarOperacao(String operacao) {
+        if (operacao == null) {
+            throw new ValidacaoException("A operação não pode ser nula.");
+        }
+        String op = operacao.trim().toLowerCase();
+        if (!op.equals("compra") && !op.equals("venda")) {
+            throw new ValidacaoException("A operação deve ser 'compra' ou 'venda'.");
+        }
+    }
+
+    private void verificarQuantidadeVenda(Conta conta, String nomeAtivo, double quantidadeNova) {
+        double totalComprado = 0;
+        double totalVendido = 0;
+
+        for (Investimento inv : conta.getInvestimentos()) {
+            if (inv == null) break;
+            if (!inv.getClass().equals(this.getClass())) continue;
+            if (!inv.getNomeAtivo().trim().equalsIgnoreCase(nomeAtivo)) continue;
+
+            if ("compra".equals(inv.getOperacao())) {
+                totalComprado += inv.getQuantidade();
+            } else if ("venda".equals(inv.getOperacao())) {
+                totalVendido += inv.getQuantidade();
+            }
+        }
+
+        if (totalVendido + quantidadeNova > totalComprado) {
+            throw new RegraNegocioException(
+                    "Quantidade de venda de '" + nomeAtivo + "' excede a quantidade comprada.");
+        }
+    }
+
+    // -------------------------------------------------------------------------
 
     @Override
     public int getId() {
@@ -120,7 +200,8 @@ public abstract class Investimento implements Identificavel {
      *         lançada quando a validação for implementada)
      */
     public void setNomeAtivo(String nomeAtivo) {
-        this.nomeAtivo = nomeAtivo;
+        validarNomeAtivo(nomeAtivo);
+        this.nomeAtivo = nomeAtivo.trim();
     }
 
     public double getValor() {
@@ -139,6 +220,7 @@ public abstract class Investimento implements Identificavel {
      *         ser lançada quando a validação for implementada)
      */
     public void setValor(double valor) {
+        validarValor(valor);
         this.valor = valor;
     }
 
@@ -166,6 +248,7 @@ public abstract class Investimento implements Identificavel {
      *         zero. (a ser lançada quando a validação for implementada)
      */
     public void setQuantidade(double quantidade) {
+        validarQuantidade(quantidade);
         this.quantidade = quantidade;
     }
 
@@ -193,6 +276,7 @@ public abstract class Investimento implements Identificavel {
      *         inválido. (a ser lançada quando a validação for implementada)
      */
     public void setData(String data) {
+        validarData(data);
         this.data = data;
     }
 
@@ -220,7 +304,8 @@ public abstract class Investimento implements Identificavel {
      *         lançada quando a validação for implementada)
      */
     public void setOperacao(String operacao) {
-        this.operacao = operacao;
+        validarOperacao(operacao);
+        this.operacao = operacao.trim().toLowerCase();
     }
 
     /**
@@ -256,10 +341,33 @@ public abstract class Investimento implements Identificavel {
      * </ul>
      */
     public void aplicarEfeito() {
-        // TODO: a implementar - aplicar o efeito desta operação sobre
-        // conta.valorConta e, se operacao == "venda", recalcular imposto e
-        // valorRealizado com base no custo médio de compra do mesmo ativo,
-        // conforme documentado acima.
+        if (conta == null) return;
+
+        if ("compra".equals(operacao)) {
+            conta.setValorConta(conta.getValorConta() - valor * quantidade);
+
+        } else if ("venda".equals(operacao)) {
+            double somaValorQuantidade = 0;
+            double somaQuantidade = 0;
+
+            for (Investimento inv : conta.getInvestimentos()) {
+                if (inv == null) break;
+                if (inv == this) continue;
+                if (!inv.getClass().equals(this.getClass())) continue;
+                if (!inv.getNomeAtivo().trim().equalsIgnoreCase(this.nomeAtivo)) continue;
+                if (!"compra".equals(inv.getOperacao())) continue;
+
+                somaValorQuantidade += inv.getValor() * inv.getQuantidade();
+                somaQuantidade += inv.getQuantidade();
+            }
+
+            double custoMedioCompra = somaQuantidade > 0 ? somaValorQuantidade / somaQuantidade : 0;
+
+            this.imposto = Math.max(0, (valor - custoMedioCompra) * quantidade) * getImpostoPadrao();
+            this.valorRealizado = valor * quantidade - this.imposto;
+
+            conta.setValorConta(conta.getValorConta() + this.valorRealizado);
+        }
     }
 
     /**
@@ -277,8 +385,12 @@ public abstract class Investimento implements Identificavel {
      * </ul>
      */
     public void reverterEfeito() {
-        // TODO: a implementar - reverter o efeito aplicado por
-        // aplicarEfeito() sobre conta.valorConta, conforme documentado
-        // acima.
+        if (conta == null) return;
+
+        if ("compra".equals(operacao)) {
+            conta.setValorConta(conta.getValorConta() + valor * quantidade);
+        } else if ("venda".equals(operacao)) {
+            conta.setValorConta(conta.getValorConta() - valorRealizado);
+        }
     }
 }

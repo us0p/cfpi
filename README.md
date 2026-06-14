@@ -3,6 +3,11 @@ O objetivo deste projeto é, auxiliar pessoas à organizar suas finanças
 pessoas para que possam alcançar os seus objetivos financeiros o mais 
 rápido possível com previsibilidade e consistência.
 
+## Como executar o projeto
+```bash
+java -cp out com.cfpi.CFPI
+```
+
 ## Testando
 
 Os testes unitários são escritos com [JUnit 5](https://junit.org/junit5/) e

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CFPI — Contas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/components.css">
+<style>
+  /*
+    Tela: Contas
+
+    Dados -> Conta (dominio.entidades.conta.Conta):
+    - tipo: "poupança" | "corrente"
+    - banco (Banco: nome, codigo)
+    - numeroConta: string, ^\d{6,}$
+    - moeda
+    - valorConta: saldo (double)
+    - limiteCredito / limiteCreditoUtilizado (double)
+
+    Mapeamento Swing:
+    - .search-input  -> JTextField filtrando ContasViewModel por
+      numeroConta (contains)
+    - .btn-primary "Nova conta" -> ContaFormDialog (já existente) em modo
+      criação
+    - .list -> JList<Conta> + ContaListItemPanel (já existente)
+    - .chip (tipo)   -> JLabel com RoundedPanel (chip-fern = poupança,
+      chip-rose = corrente, ou neutro - mantido consistente com badges
+      crédito/débito)
+    - .progress-bar  -> JProgressBar nativo, valor =
+      limiteCreditoUtilizado / limiteCredito * 100, cor customizada via
+      setForeground
+    - botão lápis    -> ContaFormDialog em modo edição
+    - botão lixeira  -> ConfirmacaoDialog antes de
+      ContasController.remover(id); se limiteCreditoUtilizado > 0, o botão
+      fica desabilitado (setEnabled(false)) com JToolTip explicando a regra
+      de negócio ("Não é possível remover uma conta com limite de crédito
+      utilizado.")
+  */
+  .conta-titulo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-1);
+  }
+  .conta-numero {
+    font-weight: 700;
+    font-size: var(--fs-lg);
+  }
+  .conta-limite {
+    min-width: 220px;
+  }
+  .conta-limite-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--fs-sm);
+    color: var(--taupe-grey-40);
+    margin-bottom: 4px;
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">CFPI</div>
+      <ul class="sidebar-nav">
+        <li><a class="sidebar-nav-item" href="02-homepage.html">Dashboard</a></li>
+        <li><a class="sidebar-nav-item active" href="05-contas.html">Contas</a></li>
+        <li><a class="sidebar-nav-item" href="04-transacoes.html">Transações</a></li>
+        <li><a class="sidebar-nav-item" href="03-objetivos.html">Objetivos</a></li>
+        <li><a class="sidebar-nav-item" href="06-investimentos.html">Investimentos</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="sidebar-nav-item">Importar</div>
+        <div class="sidebar-nav-item">Exportar</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="page-header">
+        <h1 class="page-title">Contas</h1>
+        <div class="page-actions">
+          <button class="btn btn-primary">+ Nova conta</button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <div class="search-input">
+          <span class="search-icon">&#128269;</span>
+          <input class="input" type="text" placeholder="Buscar por número da conta...">
+        </div>
+      </div>
+
+      <div class="list">
+        <div class="list-item">
+          <div class="list-item-main" style="flex-direction: column; align-items: stretch; gap: var(--space-1);">
+            <div class="conta-titulo">
+              <span class="chip chip-fern">Poupança</span>
+              <span class="conta-numero">123456-7</span>
+              <span class="text-muted">Banco do Brasil &middot; BRL</span>
+            </div>
+            <div class="list-item-field"><span class="field-label">Saldo:</span><span class="field-value">R$ 8.250,00</span></div>
+          </div>
+          <div class="list-item-actions">
+            <button class="btn-icon" title="Editar conta">&#9998;</button>
+            <button class="btn-icon btn-icon--danger" title="Remover conta">&#128465;</button>
+          </div>
+        </div>
+
+        <div class="list-item">
+          <div class="list-item-main" style="flex-direction: column; align-items: stretch; gap: var(--space-1);">
+            <div class="conta-titulo">
+              <span class="chip chip-rose">Corrente</span>
+              <span class="conta-numero">987654-3</span>
+              <span class="text-muted">Itaú &middot; BRL</span>
+            </div>
+            <div class="list-item-field"><span class="field-label">Saldo:</span><span class="field-value">R$ 6.750,00</span></div>
+            <div class="conta-limite">
+              <div class="conta-limite-label">
+                <span>Limite de crédito utilizado</span>
+                <span>R$ 9.500,00 de R$ 10.000,00</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: 95%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="list-item-actions">
+            <button class="btn-icon" title="Editar conta">&#9998;</button>
+            <button class="btn-icon btn-icon--danger" title="Não é possível remover: limite de crédito utilizado." disabled>&#128465;</button>
+          </div>
+        </div>
+
+        <div class="list-item">
+          <div class="list-item-main" style="flex-direction: column; align-items: stretch; gap: var(--space-1);">
+            <div class="conta-titulo">
+              <span class="chip chip-rose">Corrente</span>
+              <span class="conta-numero">555000-1</span>
+              <span class="text-muted">Nubank &middot; BRL</span>
+            </div>
+            <div class="list-item-field"><span class="field-label">Saldo:</span><span class="field-value">R$ 0,00</span></div>
+            <div class="conta-limite">
+              <div class="conta-limite-label">
+                <span>Limite de crédito utilizado</span>
+                <span>R$ 0,00 de R$ 2.000,00</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="list-item-actions">
+            <button class="btn-icon" title="Editar conta">&#9998;</button>
+            <button class="btn-icon btn-icon--danger" title="Remover conta">&#128465;</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CFPI — Detalhes do investimento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/components.css">
+<style>
+  /*
+    Tela: Detalhes do investimento
+
+    Dados -> Investimento (dominio.entidades.investimento.Investimento) +
+    AtivoResumo:
+    - cabeçalho: nomeAtivo, tipo (subclasse), quantidadeAtual,
+      totalInvestido, valorAtual, ganhoPerda, data da primeira compra
+    - lista: cada Investimento individual (uma "operação"):
+      data (yyyy-MM-dd), operacao ("compra" | "venda"), valor (unitário),
+      quantidade, total (valor * quantidade), imposto e valorRealizado
+      (presentes apenas quando operacao = "venda")
+
+    Esta tela não possui item próprio na Sidebar (Tela.INVESTIMENTO_DETALHES
+    não altera a seleção atual, conforme apresentacao.shell.Sidebar) —
+    "Investimentos" permanece destacado e um link "Voltar" leva de volta à
+    lista.
+
+    Mapeamento Swing:
+    - .back-link -> JButton estilo link, volta para a tela de Investimentos
+      (TelaAnterior / navegação do shell)
+    - card de cabeçalho -> JPanel com JLabels compostos (nome, chip de tipo,
+      valores formatados via Formatadores.formatarMoeda/formatarData)
+    - .list (operações) -> JList<Investimento> + OperacaoListItemPanel (já
+      existente)
+    - .chip-fern "Compra" / .chip-rose "Venda" -> operacao da entidade
+    - botão lápis   -> InvestimentoFormDialog em modo edição (operação
+      individual)
+    - botão lixeira -> ConfirmacaoDialog antes de
+      InvestimentosController.removerOperacao(id)
+  */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--taupe-grey);
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: var(--space-1);
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+  .ativo-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .ativo-header-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .ativo-header-title {
+    font-size: var(--fs-xl);
+    font-weight: 700;
+    margin: 0;
+  }
+  .ativo-stats {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-top: var(--space-2);
+  }
+  .ativo-stat-label {
+    font-size: var(--fs-sm);
+    color: var(--taupe-grey-40);
+    margin: 0 0 4px 0;
+  }
+  .ativo-stat-value {
+    font-family: var(--font-numeric);
+    font-weight: 600;
+    font-size: var(--fs-lg);
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">CFPI</div>
+      <ul class="sidebar-nav">
+        <li><a class="sidebar-nav-item" href="02-homepage.html">Dashboard</a></li>
+        <li><a class="sidebar-nav-item" href="05-contas.html">Contas</a></li>
+        <li><a class="sidebar-nav-item" href="04-transacoes.html">Transações</a></li>
+        <li><a class="sidebar-nav-item" href="03-objetivos.html">Objetivos</a></li>
+        <li><a class="sidebar-nav-item active" href="06-investimentos.html">Investimentos</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="sidebar-nav-item">Importar</div>
+        <div class="sidebar-nav-item">Exportar</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div>
+        <a class="back-link" href="06-investimentos.html">&larr; Voltar para Investimentos</a>
+        <div class="page-header">
+          <h1 class="page-title">Detalhes do investimento</h1>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ativo-header">
+          <div class="ativo-header-info">
+            <p class="ativo-header-title">PETR4</p>
+            <span class="chip chip-fern">Ação</span>
+          </div>
+          <span class="text-muted">Primeira compra em 12/01/2024</span>
+        </div>
+        <div class="ativo-stats">
+          <div>
+            <p class="ativo-stat-label">Quantidade atual</p>
+            <p class="ativo-stat-value">150</p>
+          </div>
+          <div>
+            <p class="ativo-stat-label">Total investido</p>
+            <p class="ativo-stat-value">R$ 5.000,00</p>
+          </div>
+          <div>
+            <p class="ativo-stat-label">Valor atual</p>
+            <p class="ativo-stat-value">R$ 5.850,00</p>
+          </div>
+          <div>
+            <p class="ativo-stat-label">Ganho/perda</p>
+            <p class="ativo-stat-value value-positive">+ R$ 850,00</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="section-title">Operações</p>
+        <div class="list">
+          <div class="list-item">
+            <span class="chip chip-fern">Compra</span>
+            <div class="list-item-main">
+              <div class="list-item-field"><span class="field-label">Data:</span><span class="field-value">12/01/2024</span></div>
+              <div class="list-item-field"><span class="field-label">Valor unitário:</span><span class="field-value">R$ 28,50</span></div>
+              <div class="list-item-field"><span class="field-label">Quantidade:</span><span class="field-value">100</span></div>
+              <div class="list-item-field"><span class="field-label">Total:</span><span class="field-value">R$ 2.850,00</span></div>
+            </div>
+            <div class="list-item-actions">
+              <button class="btn-icon" title="Editar operação">&#9998;</button>
+              <button class="btn-icon btn-icon--danger" title="Remover operação">&#128465;</button>
+            </div>
+          </div>
+
+          <div class="list-item">
+            <span class="chip chip-fern">Compra</span>
+            <div class="list-item-main">
+              <div class="list-item-field"><span class="field-label">Data:</span><span class="field-value">03/05/2024</span></div>
+              <div class="list-item-field"><span class="field-label">Valor unitário:</span><span class="field-value">R$ 30,00</span></div>
+              <div class="list-item-field"><span class="field-label">Quantidade:</span><span class="field-value">50</span></div>
+              <div class="list-item-field"><span class="field-label">Total:</span><span class="field-value">R$ 1.500,00</span></div>
+            </div>
+            <div class="list-item-actions">
+              <button class="btn-icon" title="Editar operação">&#9998;</button>
+              <button class="btn-icon btn-icon--danger" title="Remover operação">&#128465;</button>
+            </div>
+          </div>
+
+          <div class="list-item">
+            <span class="chip chip-rose">Venda</span>
+            <div class="list-item-main">
+              <div class="list-item-field"><span class="field-label">Data:</span><span class="field-value">20/02/2025</span></div>
+              <div class="list-item-field"><span class="field-label">Valor unitário:</span><span class="field-value">R$ 32,00</span></div>
+              <div class="list-item-field"><span class="field-label">Quantidade:</span><span class="field-value">10</span></div>
+              <div class="list-item-field"><span class="field-label">Total:</span><span class="field-value">R$ 320,00</span></div>
+              <div class="list-item-field"><span class="field-label">Imposto:</span><span class="field-value">R$ 4,80</span></div>
+              <div class="list-item-field"><span class="field-label">Valor realizado:</span><span class="field-value">R$ 315,20</span></div>
+            </div>
+            <div class="list-item-actions">
+              <button class="btn-icon" title="Editar operação">&#9998;</button>
+              <button class="btn-icon btn-icon--danger" title="Remover operação">&#128465;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

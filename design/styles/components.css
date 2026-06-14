@@ -1,0 +1,605 @@
+/*
+ * Componentes compartilhados do design system do CFPI.
+ *
+ * Cada classe aqui tem um equivalente direto em Swing (ver comentário de
+ * "Mapeamento Swing" no topo de cada mockup). Evitar adicionar efeitos sem
+ * correspondência simples (blur, animações complexas, gradientes livres).
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-display);
+  background: var(--seashell);
+  color: var(--taupe-grey);
+}
+
+/* ---- Layout geral: sidebar + conteúdo --------------------------------- */
+/* Swing: JFrame com BorderLayout -> Sidebar (WEST) + painel de conteúdo (CENTER) */
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+/* ---- Sidebar ------------------------------------------------------------ */
+/* Swing: JPanel com fundo Cores.SIDEBAR (taupe-grey), GridLayout para os
+   itens de navegação. Equivalente a apresentacao/shell/Sidebar.java. */
+
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  background: var(--taupe-grey);
+  color: var(--white);
+  padding: var(--space-3) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sidebar-brand {
+  font-weight: 600;
+  font-size: var(--fs-lg);
+  padding: 0 var(--space-1);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.sidebar-nav-item {
+  display: block;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius);
+  color: var(--white);
+  font-weight: 600;
+  font-size: var(--fs-base);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sidebar-nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-nav-item.active {
+  background: var(--seashell);
+  color: var(--taupe-grey);
+}
+
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sidebar-footer .sidebar-nav-item {
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* ---- Cabeçalho de página ------------------------------------------------ */
+/* Swing: JPanel com BorderLayout (título a WEST, ações a EAST) */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.page-title {
+  font-weight: 600;
+  font-size: var(--fs-xl);
+  margin: 0;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: var(--fs-lg);
+  margin: 0 0 var(--space-2) 0;
+}
+
+/* ---- Cards --------------------------------------------------------------- */
+/* Swing: JPanel customizado (RoundedPanel.java) com radius 8 e shadow simples
+   (ou borda 1px, já que JPanel não tem box-shadow nativo). */
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-3);
+}
+
+.card--destaque {
+  background: var(--desert-sand);
+}
+
+.cards-row {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.cards-row > .card {
+  flex: 1;
+  min-width: 260px;
+}
+
+.card-label {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  margin: 0 0 var(--space-1) 0;
+}
+
+.card-value {
+  font-family: var(--font-numeric);
+  font-weight: 600;
+  font-size: var(--fs-lg);
+}
+
+.card-subtext {
+  font-size: var(--fs-sm);
+  color: var(--taupe-grey-40);
+  margin-top: var(--space-1);
+}
+
+/* ---- Botões -------------------------------------------------------------- */
+/* Swing: RoundedButton.java (JButton customizado com paintComponent) */
+
+.btn {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-base);
+  border: none;
+  border-radius: var(--radius);
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.btn-primary {
+  background: var(--taupe-grey);
+  color: var(--white);
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--taupe-grey);
+  border: 1px solid var(--taupe-grey-15);
+}
+
+.btn-danger {
+  background: var(--white);
+  color: var(--smoky-rose);
+  border: 1px solid var(--smoky-rose-12);
+}
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  justify-content: center;
+  background: transparent;
+  color: var(--taupe-grey);
+  border: 1px solid var(--taupe-grey-15);
+  border-radius: var(--radius);
+  font-size: var(--fs-base);
+  cursor: pointer;
+}
+
+.btn-icon:hover {
+  background: var(--taupe-grey-08);
+}
+
+.btn-icon.btn-icon--danger {
+  color: var(--smoky-rose);
+}
+
+.btn-icon:disabled,
+.btn[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ---- Campos de formulário ------------------------------------------------ */
+/* Swing: RoundedTextField.java (JTextField) / JComboBox / JSpinner */
+
+label {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.input,
+.select {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  padding: 10px var(--space-2);
+  border-radius: var(--radius);
+  border: 1px solid var(--taupe-grey-15);
+  background: var(--white);
+  color: var(--taupe-grey);
+}
+
+.input:focus,
+.select:focus {
+  outline: 2px solid var(--desert-sand);
+}
+
+.input-error {
+  font-size: var(--fs-sm);
+  color: var(--smoky-rose);
+  margin-top: 4px;
+}
+
+.field.has-error .input {
+  border-color: var(--smoky-rose);
+}
+
+.filter-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.search-input {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+}
+
+.search-input .input {
+  width: 100%;
+  padding-left: 36px;
+}
+
+.search-input .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--taupe-grey-40);
+}
+
+/* ---- Listas / itens de lista --------------------------------------------- */
+/* Swing: JList com ListCellRenderer customizado (ex.: TransacaoListItemPanel,
+   ContaListItemPanel, ObjetivoListItemPanel, AtivoListItemPanel,
+   OperacaoListItemPanel) dentro de um JScrollPane */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.list-item {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.list-item-main {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.list-item-field {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  font-size: var(--fs-md);
+}
+
+.list-item-field .field-label {
+  font-weight: 700;
+}
+
+.list-item-field .field-value {
+  font-weight: 400;
+}
+
+.list-item-value {
+  font-family: var(--font-numeric);
+  font-weight: 600;
+  font-size: var(--fs-lg);
+  white-space: nowrap;
+}
+
+.list-item-actions {
+  display: flex;
+  gap: var(--space-1);
+  flex-shrink: 0;
+}
+
+.value-positive {
+  color: var(--fern);
+}
+
+.value-negative {
+  color: var(--smoky-rose);
+}
+
+/* ---- Badges (seta de crédito/débito) -------------------------------------- */
+/* Swing: IconBadge.java (JPanel circular com ícone, RoundedPanel + JLabel) */
+
+.badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-lg);
+  flex-shrink: 0;
+  border: 3px solid transparent;
+}
+
+.badge-credito {
+  background: var(--fern-12);
+  border-color: var(--fern);
+  color: var(--fern);
+}
+
+.badge-debito {
+  background: var(--smoky-rose-12);
+  border-color: var(--smoky-rose);
+  color: var(--smoky-rose);
+}
+
+/* ---- Chips / tags (tipo de conta, tipo de ativo, operação) ---------------- */
+/* Swing: JLabel com setOpaque(true) + RoundedPanel ou borda customizada */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  background: var(--taupe-grey-08);
+  color: var(--taupe-grey);
+}
+
+.chip-fern {
+  background: var(--fern-12);
+  color: var(--fern);
+}
+
+.chip-rose {
+  background: var(--smoky-rose-12);
+  color: var(--smoky-rose);
+}
+
+/* ---- Donut de progresso (limite de crédito) ------------------------------- */
+/* Swing: CircularProgressDonut.java (JComponent customizado, desenha arcos
+   com Graphics2D.drawArc) */
+
+.donut {
+  --pct: 0;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(var(--smoky-rose) calc(var(--pct) * 1%), var(--desert-sand-40) 0);
+  flex-shrink: 0;
+}
+
+.donut-inner {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-numeric);
+  font-weight: 600;
+  font-size: var(--fs-lg);
+}
+
+/* ---- Barra de progresso (limite de crédito em lista de contas) ------------- */
+/* Swing: JProgressBar nativo, com cor customizada via UIManager/setForeground */
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--desert-sand-40);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--smoky-rose);
+  border-radius: var(--radius-pill);
+}
+
+/* ---- Drag handle (reordenação de objetivos) -------------------------------- */
+/* Swing: JLabel com ícone "arrastar", TransferHandler + DropMode.INSERT na JList */
+
+.drag-handle {
+  cursor: grab;
+  color: var(--taupe-grey-40);
+  font-size: var(--fs-lg);
+  line-height: 1;
+  padding: 0 4px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* ---- Modal / diálogo -------------------------------------------------------- */
+/* Swing: JDialog modal (ex.: ObjetivoFormDialog, ContaFormDialog,
+   TransacaoFormDialog, InvestimentoFormDialog, ConfirmacaoDialog) */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(88, 75, 83, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+}
+
+.modal {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-3);
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.modal-title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  margin: 0;
+}
+
+.modal-text {
+  margin: 0;
+  font-size: var(--fs-base);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+/* ---- Gráficos (barras / linhas) --------------------------------------------- */
+/* Swing: JPanel customizado com Graphics2D, mesmo padrão de
+   BarChartCategoriaPanel.java e LineChartPatrimonioPanel.java */
+
+.chart-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-2);
+}
+
+.chart-area {
+  height: 220px;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.bar-chart {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  border-left: 1px solid var(--taupe-grey-15);
+  border-bottom: 1px solid var(--taupe-grey-15);
+  padding: 0 var(--space-1);
+}
+
+.bar-chart .bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-1);
+  height: 100%;
+}
+
+.bar-chart .bar {
+  width: 100%;
+  max-width: 48px;
+  background: var(--desert-sand);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.bar-chart .bar-label {
+  font-size: var(--fs-sm);
+  color: var(--taupe-grey-40);
+  text-align: center;
+}
+
+.line-chart {
+  flex: 1;
+  height: 100%;
+  border-left: 1px solid var(--taupe-grey-15);
+  border-bottom: 1px solid var(--taupe-grey-15);
+}
+
+/* ---- Utilidades ------------------------------------------------------------- */
+
+.text-muted {
+  color: var(--taupe-grey-40);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--taupe-grey-40);
+  padding: var(--space-4);
+}

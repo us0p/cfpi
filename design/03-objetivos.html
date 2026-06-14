@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CFPI — Objetivos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/components.css">
+<style>
+  /*
+    Tela: Objetivos
+
+    Dados -> Objetivo (dominio.entidades.objetivo.Objetivo):
+    - nome  : string, único (case-insensitive) por usuário
+    - valor : double, valor-alvo do objetivo (> 0)
+    A ORDEM da lista define a prioridade do usuário (não é um campo da
+    entidade — é a posição no array/lista mantida pela camada de
+    apresentação).
+
+    Mapeamento Swing:
+    - .search-input    -> JTextField com filtro ao vivo sobre o ListModel
+                          (ObjetivosViewModel)
+    - .btn-primary "Novo objetivo" -> abre ObjetivoFormDialog (já existente)
+                          em modo criação
+    - .list            -> JList<Objetivo> + ListCellRenderer customizado
+                          (ObjetivoListItemPanel)
+    - .drag-handle     -> área de "pega" do item; reordenação via
+                          TransferHandler + DropMode.INSERT na JList
+                          (suporte nativo do Swing, sem libs externas).
+                          Ao soltar, ObjetivosController recalcula e persiste
+                          a nova ordem/prioridade.
+    - botão lápis      -> abre ObjetivoFormDialog em modo edição, pré-
+                          preenchido com nome/valor do objetivo
+    - botão lixeira    -> abre ConfirmacaoDialog ("Remover objetivo
+                          'X'? Esta ação não pode ser desfeita.") antes de
+                          chamar ObjetivosController.remover(id)
+  */
+  .objetivo-nome {
+    font-weight: 700;
+    font-size: var(--fs-lg);
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">CFPI</div>
+      <ul class="sidebar-nav">
+        <li><a class="sidebar-nav-item" href="02-homepage.html">Dashboard</a></li>
+        <li><a class="sidebar-nav-item" href="05-contas.html">Contas</a></li>
+        <li><a class="sidebar-nav-item" href="04-transacoes.html">Transações</a></li>
+        <li><a class="sidebar-nav-item active" href="03-objetivos.html">Objetivos</a></li>
+        <li><a class="sidebar-nav-item" href="06-investimentos.html">Investimentos</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="sidebar-nav-item">Importar</div>
+        <div class="sidebar-nav-item">Exportar</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="page-header">
+        <h1 class="page-title">Objetivos</h1>
+        <div class="page-actions">
+          <button class="btn btn-primary">+ Novo objetivo</button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <div class="search-input">
+          <span class="search-icon">&#128269;</span>
+          <input class="input" type="text" placeholder="Buscar objetivo por nome...">
+        </div>
+      </div>
+
+      <p class="card-subtext" style="margin: 0;">
+        Arraste pelo ícone <span class="drag-handle" style="display:inline; padding:0;">&#8942;&#8942;</span>
+        para reordenar a prioridade dos objetivos.
+      </p>
+
+      <div class="list">
+        <div class="list-item">
+          <span class="drag-handle">&#8942;&#8942;</span>
+          <div class="list-item-main">
+            <span class="objetivo-nome">Viagem para o Japão</span>
+          </div>
+          <div class="list-item-value">R$ 20.000,00</div>
+          <div class="list-item-actions">
+            <button class="btn-icon" title="Editar objetivo">&#9998;</button>
+            <button class="btn-icon btn-icon--danger" title="Remover objetivo">&#128465;</button>
+          </div>
+        </div>
+
+        <div class="list-item">
+          <span class="drag-handle">&#8942;&#8942;</span>
+          <div class="list-item-main">
+            <span class="objetivo-nome">Reserva de emergência</span>
+          </div>
+          <div class="list-item-value">R$ 15.000,00</div>
+          <div class="list-item-actions">
+            <button class="btn-icon" title="Editar objetivo">&#9998;</button>
+            <button class="btn-icon btn-icon--danger" title="Remover objetivo">&#128465;</button>
+          </div>
+        </div>
+
+        <div class="list-item">
+          <span class="drag-handle">&#8942;&#8942;</span>
+          <div class="list-item-main">
+            <span class="objetivo-nome">Troca de notebook</span>
+          </div>
+          <div class="list-item-value">R$ 6.500,00</div>
+          <div class="list-item-actions">
+            <button class="btn-icon" title="Editar objetivo">&#9998;</button>
+            <button class="btn-icon btn-icon--danger" title="Remover objetivo">&#128465;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado: confirmação de remoção (referência visual) -->
+      <div class="modal-overlay" style="position: static; background: transparent; padding: 0; justify-content: flex-start;">
+        <div class="modal" style="max-width: 420px;">
+          <p class="modal-title">Remover objetivo?</p>
+          <p class="modal-text">
+            Tem certeza que deseja remover o objetivo <strong>"Troca de notebook"</strong>?
+            Esta ação não pode ser desfeita.
+          </p>
+          <div class="modal-actions">
+            <button class="btn btn-secondary">Cancelar</button>
+            <button class="btn btn-danger">Remover</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

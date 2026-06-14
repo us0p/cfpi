@@ -23,21 +23,41 @@ public class Banco implements Identificavel {
     /**
      * Cria um banco com nome e código informados.
      *
-     * <p><b>Validação prevista (a implementar):</b> {@code nome}, após
-     * {@code trim()}, deve conter apenas letras (Unicode) e espaços e ter
-     * mais de 3 caracteres; {@code codigo} deve estar no intervalo
-     * [100, 999] (3 dígitos).</p>
+     * <p><b>Validação:</b> {@code nome}, após {@code trim()}, deve conter
+     * apenas letras (Unicode) e espaços e ter mais de 3 caracteres;
+     * {@code codigo} deve estar no intervalo [100, 999] (3 dígitos).</p>
      *
      * @param nome   nome do banco.
      * @param codigo código numérico do banco (3 dígitos).
      * @throws ValidacaoException se {@code nome} ou {@code codigo} forem
-     *         inválidos conforme as regras acima. (a ser lançada quando a
-     *         validação for implementada)
+     *         inválidos conforme as regras acima.
      */
     public Banco(String nome, int codigo) {
+        validarNome(nome);
+        validarCodigo(codigo);
+
         this.id = contadorId++;
-        this.nome = nome;
+        this.nome = nome.trim();
         this.codigo = codigo;
+    }
+
+    // -------------------------------------------------------------------------
+    // Métodos privados de validação
+    // -------------------------------------------------------------------------
+
+    private static void validarNome(String nome) {
+        if (nome == null || nome.trim().length() <= 3) {
+            throw new ValidacaoException("O nome do banco deve ter mais de 3 caracteres.");
+        }
+        if (!nome.trim().matches("[\\p{L} ]+")) {
+            throw new ValidacaoException("O nome do banco deve conter apenas letras e espaços.");
+        }
+    }
+
+    private static void validarCodigo(int codigo) {
+        if (codigo < 100 || codigo > 999) {
+            throw new ValidacaoException("O código do banco deve estar entre 100 e 999.");
+        }
     }
 
     /**
@@ -65,17 +85,16 @@ public class Banco implements Identificavel {
     /**
      * Define o nome do banco.
      *
-     * <p><b>Validação prevista (a implementar):</b> mesma regra do
-     * construtor {@link #Banco(String, int)} — {@code nome}, após
-     * {@code trim()}, deve conter apenas letras (Unicode) e espaços e ter
-     * mais de 3 caracteres.</p>
+     * <p><b>Validação:</b> mesma regra do construtor {@link #Banco(String,
+     * int)} — {@code nome}, após {@code trim()}, deve conter apenas letras
+     * (Unicode) e espaços e ter mais de 3 caracteres.</p>
      *
      * @param nome novo nome do banco.
-     * @throws ValidacaoException se {@code nome} for inválido. (a ser
-     *         lançada quando a validação for implementada)
+     * @throws ValidacaoException se {@code nome} for inválido.
      */
     public void setNome(String nome) {
-        this.nome = nome;
+        validarNome(nome);
+        this.nome = nome.trim();
     }
 
     public int getCodigo() {
@@ -85,15 +104,15 @@ public class Banco implements Identificavel {
     /**
      * Define o código do banco.
      *
-     * <p><b>Validação prevista (a implementar):</b> {@code codigo} deve
-     * estar no intervalo [100, 999] (3 dígitos).</p>
+     * <p><b>Validação:</b> {@code codigo} deve estar no intervalo
+     * [100, 999] (3 dígitos).</p>
      *
      * @param codigo novo código do banco.
      * @throws ValidacaoException se {@code codigo} estiver fora do
-     *         intervalo [100, 999]. (a ser lançada quando a validação for
-     *         implementada)
+     *         intervalo [100, 999].
      */
     public void setCodigo(int codigo) {
+        validarCodigo(codigo);
         this.codigo = codigo;
     }
 }

@@ -13,8 +13,8 @@ class TransacaoTest {
     void idEhIncrementadoAutomaticamenteEntreSubclasses() {
         Conta conta = new Conta();
 
-        Credito credito = new Credito("Salario", conta, "2026-06-10", 1000.0, "Renda");
-        Debito debito = new Debito("Mercado", conta, "2026-06-11", 50.0, "Alimentacao", "cartao");
+        Credito credito = new Credito("Salario", conta, "2026-06-10", 1000.0, "pagamento");
+        Debito debito = new Debito("Mercado", conta, "2026-06-11", 50.0, "mercado", "avista");
 
         assertEquals(credito.getId() + 1, debito.getId());
     }

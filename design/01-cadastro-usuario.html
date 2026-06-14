@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CFPI — Cadastro de usuário</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/components.css">
+<style>
+  /*
+    Tela: Cadastro de usuário (onboarding, sem sidebar)
+
+    Campos -> Usuario (dominio.entidades.usuario.Usuario):
+    - nome           : >= 3 caracteres, apenas letras (Unicode) e espaços
+    - cpf            : 11 dígitos numéricos, exibido formatado "xxx.xxx.xxx-xx"
+    - telefone       : 11 dígitos numéricos, exibido formatado "(xx) xxxxx-xxxx"
+    - dataNascimento : formato ISO yyyy-MM-dd, estritamente anterior a hoje
+
+    Mapeamento Swing:
+    - .card "onboarding-card"  -> RoundedPanel centralizado no JFrame (sem Sidebar)
+    - .input (nome)            -> JTextField + ValidadoresFormulario
+    - .input (cpf, telefone)   -> JFormattedTextField + MaskFormatter
+                                   ("###.###.###-##" / "(##) #####-####")
+    - .input (data nascimento) -> JSpinner + SpinnerDateModel (JSpinner.DateEditor),
+                                   sem dependências externas de date-picker
+    - .input-error             -> JLabel com cor Cores.SMOKY_ROSE, visibilidade
+                                   alternada via setVisible() conforme validação
+    - .btn-primary "Criar conta" -> RoundedButton, chama
+                                   CadastroUsuarioController.cadastrar(...)
+
+    Fluxo de navegação: o sistema suporta um único usuário. Esta tela só é
+    exibida enquanto não há usuário cadastrado e, uma vez criada a conta,
+    não há como trocar de usuário (não existe tela de login). Após
+    "Criar conta" com sucesso, navega direto para 02-homepage.html
+    (Dashboard).
+  */
+  body.onboarding {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: var(--space-3);
+  }
+  .onboarding-card {
+    width: 100%;
+    max-width: 480px;
+  }
+  .onboarding-title {
+    font-size: var(--fs-xl);
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 var(--space-1) 0;
+  }
+  .onboarding-subtitle {
+    text-align: center;
+    color: var(--taupe-grey-40);
+    margin: 0 0 var(--space-3) 0;
+  }
+  .field-row {
+    display: flex;
+    gap: var(--space-2);
+  }
+  .field-row .field {
+    flex: 1;
+  }
+  .btn-block {
+    width: 100%;
+    justify-content: center;
+    margin-top: var(--space-1);
+  }
+</style>
+</head>
+<body class="onboarding">
+  <div class="card onboarding-card">
+    <p class="onboarding-title">Criar conta</p>
+    <p class="onboarding-subtitle">Preencha seus dados para começar a usar o CFPI.</p>
+
+    <form class="modal-form">
+      <div class="field">
+        <label for="nome">Nome completo</label>
+        <input class="input" id="nome" type="text" value="Ana Maria Souza" placeholder="Seu nome completo">
+      </div>
+
+      <div class="field-row">
+        <div class="field has-error">
+          <label for="cpf">CPF</label>
+          <input class="input" id="cpf" type="text" value="123.456.789-0" placeholder="000.000.000-00">
+          <span class="input-error">CPF deve conter 11 dígitos numéricos.</span>
+        </div>
+        <div class="field">
+          <label for="telefone">Telefone</label>
+          <input class="input" id="telefone" type="text" value="(11) 98765-4321" placeholder="(00) 00000-0000">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="nascimento">Data de nascimento</label>
+        <input class="input" id="nascimento" type="text" value="15/03/1995" placeholder="dd/mm/aaaa">
+        <span class="input-error" style="display:none;">Data de nascimento deve ser anterior a hoje.</span>
+      </div>
+
+      <a href="02-homepage.html" class="btn btn-primary btn-block">Criar conta</a>
+    </form>
+  </div>
+</body>
+</html>

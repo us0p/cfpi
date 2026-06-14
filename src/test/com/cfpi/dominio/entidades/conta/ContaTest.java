@@ -34,7 +34,7 @@ class ContaTest {
     void criarTransacaoComContaRegistraTransacaoNaConta() {
         Conta conta = new Conta();
 
-        Transacao transacao = new Credito("Salario", conta, "2026-06-10", 1000.0, "Renda");
+        Transacao transacao = new Credito("Salario", conta, "2026-06-10", 1000.0, "pagamento");
 
         Transacao[] transacoes = conta.getTransacoes();
         assertEquals(1, transacoes.length);
@@ -64,7 +64,7 @@ class ContaTest {
     void criarContaComUsuarioRegistraContaNoUsuario() {
         Usuario usuario = new Usuario("Fulano", "11111111111", "11999999999", "1990-01-01");
 
-        Conta conta = new Conta("Corrente", 100.0, "0001", "BRL", null, usuario, 0.0);
+        Conta conta = new Conta("Corrente", 100.0, "100001", "BRL", null, usuario, 0.0);
 
         Conta[] contas = usuario.getContas();
         assertEquals(1, contas.length);
@@ -75,8 +75,8 @@ class ContaTest {
     void criarMultiplasContasComMesmoUsuarioRegistraTodas() {
         Usuario usuario = new Usuario("Fulano", "11111111111", "11999999999", "1990-01-01");
 
-        Conta conta1 = new Conta("Corrente", 100.0, "0001", "BRL", null, usuario, 0.0);
-        Conta conta2 = new Conta("Poupanca", 200.0, "0002", "BRL", null, usuario, 0.0);
+        Conta conta1 = new Conta("Corrente", 100.0, "100001", "BRL", null, usuario, 0.0);
+        Conta conta2 = new Conta("Poupança", 200.0, "100002", "BRL", null, usuario, 0.0);
 
         Conta[] contas = usuario.getContas();
         assertEquals(2, contas.length);
@@ -98,7 +98,7 @@ class ContaTest {
         Banco banco = new Banco("Banco Teste", 237);
         Usuario usuario = new Usuario("Fulano", "11111111111", "11999999999", "1990-01-01");
 
-        Conta conta = new Conta("Corrente", 100.0, "0001", "BRL", banco, usuario, 0.0);
+        Conta conta = new Conta("Corrente", 100.0, "100001", "BRL", banco, usuario, 0.0);
 
         assertSame(banco, conta.getBanco());
         assertSame(usuario, conta.getUsuario());

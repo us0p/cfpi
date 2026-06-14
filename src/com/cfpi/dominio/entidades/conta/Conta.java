@@ -9,6 +9,9 @@ import com.cfpi.dominio.entidades.usuario.Usuario;
 import com.cfpi.dominio.excecoes.RegraNegocioException;
 import com.cfpi.dominio.excecoes.ValidacaoException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 public class Conta implements Identificavel {
 
     private static int contadorId = 1;
@@ -41,7 +44,7 @@ public class Conta implements Identificavel {
     /**
      * Cria uma conta com os dados informados.
      *
-     * <p><b>Validações previstas (a implementar):</b></p>
+     * <p><b>Validações:</b></p>
      * <ul>
      *   <li>{@code tipo}: após {@code trim()} e ignorando case, deve ser
      *       {@code "poupança"} ou {@code "corrente"}.</li>
@@ -51,10 +54,9 @@ public class Conta implements Identificavel {
      *   <li>{@code limiteCredito}: deve ser maior ou igual a zero.</li>
      * </ul>
      *
-     * <p><b>Regra de negócio prevista (a implementar):</b> se
-     * {@code usuario != null && banco != null} e já existir em
-     * {@code usuario.getContas()} outra conta com o mesmo
-     * {@code banco.getId()} e o mesmo {@code tipo} (comparação
+     * <p><b>Regra de negócio:</b> se {@code usuario != null && banco !=
+     * null} e já existir em {@code usuario.getContas()} outra conta com o
+     * mesmo {@code banco.getId()} e o mesmo {@code tipo} (comparação
      * case-insensitive, após {@code trim()}), a criação é rejeitada por
      * representar uma conta duplicada.</p>
      *
@@ -72,12 +74,19 @@ public class Conta implements Identificavel {
      * @param limiteCredito limite de crédito máximo da conta.
      * @throws ValidacaoException se {@code tipo}, {@code numeroConta},
      *         {@code valorConta} ou {@code limiteCredito} forem inválidos.
-     *         (a ser lançada quando a validação for implementada)
      * @throws RegraNegocioException se já existir, para o mesmo usuário e
-     *         banco, outra conta com o mesmo {@code tipo}. (a ser lançada
-     *         quando a regra for implementada)
+     *         banco, outra conta com o mesmo {@code tipo}.
      */
     public Conta(String tipo, double valorConta, String numeroConta, String moeda, Banco banco, Usuario usuario, double limiteCredito) {
+        validarTipo(tipo);
+        validarNumeroConta(numeroConta);
+        validarValorConta(valorConta);
+        validarLimiteCredito(limiteCredito);
+
+        if (usuario != null && banco != null) {
+            verificarContaDuplicada(usuario, banco, tipo);
+        }
+
         this.id = contadorId++;
         this.tipo = tipo;
         this.valorConta = valorConta;
@@ -92,6 +101,57 @@ public class Conta implements Identificavel {
 
         if (usuario != null) {
             usuario.adicionarConta(this);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Métodos privados de validação
+    // -------------------------------------------------------------------------
+
+    private static void validarTipo(String tipo) {
+        if (tipo == null) {
+            throw new ValidacaoException("O tipo da conta não pode ser nulo.");
+        }
+        String t = tipo.trim().toLowerCase();
+        if (!t.equals("poupança") && !t.equals("corrente")) {
+            throw new ValidacaoException("O tipo da conta deve ser 'poupança' ou 'corrente'.");
+        }
+    }
+
+    private static void validarNumeroConta(String numeroConta) {
+        if (numeroConta == null || !numeroConta.matches("^\\d{6,}$")) {
+            throw new ValidacaoException("O número da conta deve conter apenas dígitos, com no mínimo 6 caracteres.");
+        }
+    }
+
+    private static void validarValorConta(double valorConta) {
+        if (valorConta < 0) {
+            throw new ValidacaoException("O valor da conta não pode ser negativo.");
+        }
+    }
+
+    private static void validarLimiteCredito(double limiteCredito) {
+        if (limiteCredito < 0) {
+            throw new ValidacaoException("O limite de crédito não pode ser negativo.");
+        }
+    }
+
+    private static void validarLimiteCreditoUtilizado(double limiteCreditoUtilizado) {
+        if (limiteCreditoUtilizado < 0) {
+            throw new ValidacaoException("O limite de crédito utilizado não pode ser negativo.");
+        }
+    }
+
+    private static void verificarContaDuplicada(Usuario usuario, Banco banco, String tipo) {
+        String alvo = tipo.trim();
+        for (Conta conta : usuario.getContas()) {
+            if (conta.getBanco() != null
+                    && conta.getBanco().getId() == banco.getId()
+                    && conta.getTipo() != null
+                    && conta.getTipo().trim().equalsIgnoreCase(alvo)) {
+                throw new RegraNegocioException(
+                        "Já existe uma conta deste tipo para este banco e usuário.");
+            }
         }
     }
 
@@ -121,15 +181,14 @@ public class Conta implements Identificavel {
     /**
      * Define o tipo da conta.
      *
-     * <p><b>Validação prevista (a implementar):</b> mesma regra do
-     * construtor {@link #Conta(String, double, String, String, Banco,
-     * Usuario, double)} para {@code tipo}.</p>
+     * <p><b>Validação:</b> mesma regra do construtor {@link #Conta(String,
+     * double, String, String, Banco, Usuario, double)} para {@code tipo}.</p>
      *
      * @param tipo novo tipo da conta ({@code "poupança"} ou {@code "corrente"}).
-     * @throws ValidacaoException se {@code tipo} for inválido. (a ser
-     *         lançada quando a validação for implementada)
+     * @throws ValidacaoException se {@code tipo} for inválido.
      */
     public void setTipo(String tipo) {
+        validarTipo(tipo);
         this.tipo = tipo;
     }
 
@@ -140,16 +199,31 @@ public class Conta implements Identificavel {
     /**
      * Define o saldo da conta.
      *
-     * <p><b>Validação prevista (a implementar):</b> mesma regra do
-     * construtor {@link #Conta(String, double, String, String, Banco,
-     * Usuario, double)} para {@code valorConta} ({@code valorConta >= 0}).</p>
+     * <p><b>Validação:</b> mesma regra do construtor {@link #Conta(String,
+     * double, String, String, Banco, Usuario, double)} para
+     * {@code valorConta} ({@code valorConta >= 0}).</p>
      *
      * @param valorConta novo saldo da conta.
-     * @throws ValidacaoException se {@code valorConta} for negativo. (a ser
-     *         lançada quando a validação for implementada)
+     * @throws ValidacaoException se {@code valorConta} for negativo.
      */
     public void setValorConta(double valorConta) {
+        validarValorConta(valorConta);
         this.valorConta = valorConta;
+    }
+
+    /**
+     * Ajusta o saldo da conta somando {@code delta} ao valor atual.
+     *
+     * <p>Usado por {@code aplicarEfeito()}/{@code reverterEfeito()} de
+     * {@link Transacao} e {@link Investimento}, que podem legitimamente
+     * deixar {@code valorConta} negativo (ex: saldo devedor); por isso, ao
+     * contrário de {@link #setValorConta(double)}, este método não valida
+     * {@code valorConta >= 0}.</p>
+     *
+     * @param delta valor a ser somado ao saldo atual (pode ser negativo).
+     */
+    public void ajustarValorConta(double delta) {
+        this.valorConta += delta;
     }
 
     public String getNumeroConta() {
@@ -159,15 +233,15 @@ public class Conta implements Identificavel {
     /**
      * Define o número da conta.
      *
-     * <p><b>Validação prevista (a implementar):</b> mesma regra do
-     * construtor {@link #Conta(String, double, String, String, Banco,
-     * Usuario, double)} para {@code numeroConta} (regex {@code ^\d{6,}$}).</p>
+     * <p><b>Validação:</b> mesma regra do construtor {@link #Conta(String,
+     * double, String, String, Banco, Usuario, double)} para
+     * {@code numeroConta} (regex {@code ^\d{6,}$}).</p>
      *
      * @param numeroConta novo número da conta.
-     * @throws ValidacaoException se {@code numeroConta} for inválido. (a ser
-     *         lançada quando a validação for implementada)
+     * @throws ValidacaoException se {@code numeroConta} for inválido.
      */
     public void setNumeroConta(String numeroConta) {
+        validarNumeroConta(numeroConta);
         this.numeroConta = numeroConta;
     }
 
@@ -199,16 +273,15 @@ public class Conta implements Identificavel {
     /**
      * Define o limite de crédito máximo da conta.
      *
-     * <p><b>Validação prevista (a implementar):</b> mesma regra do
-     * construtor {@link #Conta(String, double, String, String, Banco,
-     * Usuario, double)} para {@code limiteCredito} ({@code limiteCredito
-     * >= 0}).</p>
+     * <p><b>Validação:</b> mesma regra do construtor {@link #Conta(String,
+     * double, String, String, Banco, Usuario, double)} para
+     * {@code limiteCredito} ({@code limiteCredito >= 0}).</p>
      *
      * @param limiteCredito novo limite de crédito máximo da conta.
-     * @throws ValidacaoException se {@code limiteCredito} for negativo. (a
-     *         ser lançada quando a validação for implementada)
+     * @throws ValidacaoException se {@code limiteCredito} for negativo.
      */
     public void setLimiteCredito(double limiteCredito) {
+        validarLimiteCredito(limiteCredito);
         this.limiteCredito = limiteCredito;
     }
 
@@ -226,14 +299,14 @@ public class Conta implements Identificavel {
      * débitos/créditos sobre a conta, mas também pode ser definido
      * diretamente por este setter.</p>
      *
-     * <p><b>Validação prevista (a implementar):</b>
-     * {@code limiteCreditoUtilizado >= 0}.</p>
+     * <p><b>Validação:</b> {@code limiteCreditoUtilizado >= 0}.</p>
      *
      * @param limiteCreditoUtilizado novo valor do limite de crédito utilizado.
      * @throws ValidacaoException se {@code limiteCreditoUtilizado} for
-     *         negativo. (a ser lançada quando a validação for implementada)
+     *         negativo.
      */
     public void setLimiteCreditoUtilizado(double limiteCreditoUtilizado) {
+        validarLimiteCreditoUtilizado(limiteCreditoUtilizado);
         this.limiteCreditoUtilizado = limiteCreditoUtilizado;
     }
 
@@ -254,8 +327,11 @@ public class Conta implements Identificavel {
      *         encontrada.
      */
     public Transacao pesquisarTransacaoPorId(int id) {
-        // TODO: a implementar - percorrer transacoes.getArr() e retornar a
-        // transação cujo getId() seja igual a id, ou null se não encontrada.
+        for (Transacao transacao : transacoes.getArr()) {
+            if (transacao.getId() == id) {
+                return transacao;
+            }
+        }
         return null;
     }
 
@@ -277,31 +353,47 @@ public class Conta implements Identificavel {
      *         encontrada.
      * @throws ValidacaoException se {@code dataInicio} ou {@code dataFim}
      *         estiverem em formato inválido, ou se {@code dataInicio} for
-     *         posterior a {@code dataFim}. (a ser lançada quando a
-     *         validação for implementada)
+     *         posterior a {@code dataFim}.
      */
     public Transacao[] pesquisarTransacoesPorPeriodo(String dataInicio, String dataFim) {
-        // TODO: a implementar - validar dataInicio/dataFim e filtrar
-        // transacoes.getArr() por data dentro do intervalo informado.
-        return null;
+        LocalDate inicio;
+        LocalDate fim;
+        try {
+            inicio = LocalDate.parse(dataInicio);
+            fim = LocalDate.parse(dataFim);
+        } catch (DateTimeParseException e) {
+            throw new ValidacaoException("dataInicio e dataFim devem estar no formato yyyy-MM-dd.", e);
+        }
+        if (inicio.isAfter(fim)) {
+            throw new ValidacaoException("dataInicio não pode ser posterior a dataFim.");
+        }
+
+        ArrayDinamico<Transacao> resultado = new ArrayDinamico<>(Transacao.class, CAPACIDADE_INICIAL_TRANSACOES);
+        for (Transacao transacao : transacoes.getArr()) {
+            LocalDate data = LocalDate.parse(transacao.getData());
+            if (!data.isBefore(inicio) && !data.isAfter(fim)) {
+                resultado.inserir(transacao);
+            }
+        }
+        return resultado.getArr();
     }
 
     /**
      * Remove, da conta, a transação com o {@code id} informado, revertendo
      * seu efeito sobre {@code valorConta}/{@code limiteCreditoUtilizado}.
      *
-     * <p><b>Mecânica prevista (a implementar):</b> localizar a transação com
-     * o {@code id} informado em {@code transacoes}, chamar
-     * {@code transacao.reverterEfeito()} e removê-la do
-     * {@link ArrayDinamico} interno.</p>
-     *
      * @param id id da transação a ser removida.
      * @return {@code true} se a transação foi encontrada e removida,
      *         {@code false} caso contrário.
      */
     public boolean removerTransacao(int id) {
-        // TODO: a implementar - localizar a transação pelo id, chamar
-        // reverterEfeito() e remover do ArrayDinamico.
+        Transacao[] arr = transacoes.getArr();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].getId() == id) {
+                arr[i].reverterEfeito();
+                return transacoes.remover(i);
+            }
+        }
         return false;
     }
 
@@ -322,9 +414,11 @@ public class Conta implements Identificavel {
      *         encontrado.
      */
     public Investimento pesquisarInvestimentoPorId(int id) {
-        // TODO: a implementar - percorrer investimentos.getArr() e retornar
-        // o investimento cujo getId() seja igual a id, ou null se não
-        // encontrado.
+        for (Investimento investimento : investimentos.getArr()) {
+            if (investimento.getId() == id) {
+                return investimento;
+            }
+        }
         return null;
     }
 
@@ -332,18 +426,18 @@ public class Conta implements Identificavel {
      * Remove, da conta, o investimento com o {@code id} informado,
      * revertendo seu efeito sobre {@code valorConta}.
      *
-     * <p><b>Mecânica prevista (a implementar):</b> localizar o investimento
-     * com o {@code id} informado em {@code investimentos}, chamar
-     * {@code investimento.reverterEfeito()} e removê-lo do
-     * {@link ArrayDinamico} interno.</p>
-     *
      * @param id id do investimento a ser removido.
      * @return {@code true} se o investimento foi encontrado e removido,
      *         {@code false} caso contrário.
      */
     public boolean removerInvestimento(int id) {
-        // TODO: a implementar - localizar o investimento pelo id, chamar
-        // reverterEfeito() e remover do ArrayDinamico.
+        Investimento[] arr = investimentos.getArr();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].getId() == id) {
+                arr[i].reverterEfeito();
+                return investimentos.remover(i);
+            }
+        }
         return false;
     }
 }

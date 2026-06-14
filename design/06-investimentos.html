@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CFPI — Investimentos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/components.css">
+<style>
+  /*
+    Tela: Investimentos
+
+    Dados -> AtivoResumo (apresentacao.investimentos.AtivoResumo), já
+    existente:
+    - nomeAtivo, tipo (subclasse de Investimento), quantidadeAtual,
+      totalInvestido, valorAtual, ganhoPerda
+
+    Tipos de ativo (subclasses de Investimento): Ação, CDB, CRA, CRI,
+    Cripto, DEB, FII, LCA, LCI, PGBL, Tesouro Direto, VGBL
+
+    Mapeamento Swing:
+    - .search-input -> JTextField filtrando por nomeAtivo (contains)
+    - filtro "Tipo" -> JComboBox<String> com as 12 subclasses de
+      Investimento
+    - .btn-primary "Novo investimento" -> InvestimentoFormDialog (já
+      existente) em modo criação
+    - .list -> JList<AtivoResumo> + AtivoListItemPanel (já existente)
+    - cada .list-item é clicável (MouseListener no item da JList) e abre
+      07-investimento-detalhes.html (tela de detalhes do ativo
+      selecionado)
+    - ganhoPerda > 0 -> .value-positive (fern); < 0 -> .value-negative
+      (smoky-rose)
+  */
+  .ativo-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+    color: inherit;
+  }
+  .ativo-link:hover .ativo-nome {
+    text-decoration: underline;
+  }
+  .ativo-nome {
+    font-weight: 700;
+    font-size: var(--fs-lg);
+  }
+  .ativo-valores {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+  .ativo-ganho {
+    font-size: var(--fs-sm);
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">CFPI</div>
+      <ul class="sidebar-nav">
+        <li><a class="sidebar-nav-item" href="02-homepage.html">Dashboard</a></li>
+        <li><a class="sidebar-nav-item" href="05-contas.html">Contas</a></li>
+        <li><a class="sidebar-nav-item" href="04-transacoes.html">Transações</a></li>
+        <li><a class="sidebar-nav-item" href="03-objetivos.html">Objetivos</a></li>
+        <li><a class="sidebar-nav-item active" href="06-investimentos.html">Investimentos</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="sidebar-nav-item">Importar</div>
+        <div class="sidebar-nav-item">Exportar</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="page-header">
+        <h1 class="page-title">Investimentos</h1>
+        <div class="page-actions">
+          <button class="btn btn-primary">+ Novo investimento</button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <div class="search-input">
+          <span class="search-icon">&#128269;</span>
+          <input class="input" type="text" placeholder="Buscar ativo por nome...">
+        </div>
+        <div class="field">
+          <label for="tipo-ativo">Tipo</label>
+          <select class="select" id="tipo-ativo">
+            <option>Todos os tipos</option>
+            <option>Ação</option>
+            <option>CDB</option>
+            <option>CRA</option>
+            <option>CRI</option>
+            <option>Cripto</option>
+            <option>DEB</option>
+            <option>FII</option>
+            <option>LCA</option>
+            <option>LCI</option>
+            <option>PGBL</option>
+            <option>Tesouro Direto</option>
+            <option>VGBL</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="list">
+        <a class="list-item" href="07-investimento-detalhes.html" style="text-decoration:none; color:inherit;">
+          <div class="ativo-link">
+            <div>
+              <p class="ativo-nome" style="margin:0;">PETR4</p>
+              <span class="chip chip-fern">Ação</span>
+              <span class="text-muted">Quantidade: 150</span>
+            </div>
+          </div>
+          <div class="ativo-valores">
+            <span class="list-item-value">R$ 5.850,00</span>
+            <span class="ativo-ganho value-positive">+ R$ 850,00</span>
+          </div>
+        </a>
+
+        <a class="list-item" href="07-investimento-detalhes.html" style="text-decoration:none; color:inherit;">
+          <div class="ativo-link">
+            <div>
+              <p class="ativo-nome" style="margin:0;">Tesouro Selic 2029</p>
+              <span class="chip">Tesouro Direto</span>
+              <span class="text-muted">Quantidade: 3,21</span>
+            </div>
+          </div>
+          <div class="ativo-valores">
+            <span class="list-item-value">R$ 3.420,00</span>
+            <span class="ativo-ganho value-positive">+ R$ 120,00</span>
+          </div>
+        </a>
+
+        <a class="list-item" href="07-investimento-detalhes.html" style="text-decoration:none; color:inherit;">
+          <div class="ativo-link">
+            <div>
+              <p class="ativo-nome" style="margin:0;">Bitcoin</p>
+              <span class="chip chip-rose">Cripto</span>
+              <span class="text-muted">Quantidade: 0,015</span>
+            </div>
+          </div>
+          <div class="ativo-valores">
+            <span class="list-item-value">R$ 4.980,00</span>
+            <span class="ativo-ganho value-negative">- R$ 320,00</span>
+          </div>
+        </a>
+
+        <a class="list-item" href="07-investimento-detalhes.html" style="text-decoration:none; color:inherit;">
+          <div class="ativo-link">
+            <div>
+              <p class="ativo-nome" style="margin:0;">CDB Banco Inter</p>
+              <span class="chip">CDB</span>
+              <span class="text-muted">Quantidade: 1</span>
+            </div>
+          </div>
+          <div class="ativo-valores">
+            <span class="list-item-value">R$ 2.150,00</span>
+            <span class="ativo-ganho value-positive">+ R$ 150,00</span>
+          </div>
+        </a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

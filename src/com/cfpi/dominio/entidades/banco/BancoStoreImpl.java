@@ -1,7 +1,9 @@
 package com.cfpi.dominio.entidades.banco;
 
+import com.cfpi.dominio.entidades.conta.Conta;
 import com.cfpi.dominio.entidades.usuario.Usuario;
 import com.cfpi.dominio.arraydinamico.ArrayDinamico;
+import com.cfpi.dominio.excecoes.RegraNegocioException;
 
 /**
  * Implementação de {@link BancoStore} baseada em {@link ArrayDinamico}.
@@ -33,7 +35,9 @@ public class BancoStoreImpl implements BancoStore {
 
     @Override
     public boolean inserir(Banco banco) {
-        // TODO: validar duplicidade por nome/código (RegraNegocioException) - a implementar
+        if (pesquisarPorNome(banco.getNome()) != null || pesquisarPorCodigo(banco.getCodigo()) != null) {
+            throw new RegraNegocioException("Já existe um banco cadastrado com este nome ou código.");
+        }
         return bancos.inserir(banco);
     }
 
@@ -73,24 +77,37 @@ public class BancoStoreImpl implements BancoStore {
 
     @Override
     public boolean atualizar(int id, Banco novoValor) {
-        // TODO: validar colisão de nome/código com outro banco existente
-        // (RegraNegocioException) e ausência do banco (RegraNegocioException)
-        // - a implementar
         int idx = indexOf(id);
         if (idx < 0) {
-            return false;
+            throw new RegraNegocioException("Não existe banco cadastrado com este id.");
         }
+
+        Banco existentePorNome = pesquisarPorNome(novoValor.getNome());
+        if (existentePorNome != null && existentePorNome.getId() != id) {
+            throw new RegraNegocioException("Já existe outro banco cadastrado com este nome.");
+        }
+
+        Banco existentePorCodigo = pesquisarPorCodigo(novoValor.getCodigo());
+        if (existentePorCodigo != null && existentePorCodigo.getId() != id) {
+            throw new RegraNegocioException("Já existe outro banco cadastrado com este código.");
+        }
+
         return bancos.atualizar(idx, novoValor);
     }
 
     @Override
     public boolean remover(int id) {
-        // TODO: validar dependência de contas associadas ao banco
-        // (RegraNegocioException) - a implementar, usando usuario.getContas()
         int idx = indexOf(id);
         if (idx < 0) {
             return false;
         }
+
+        for (Conta conta : usuario.getContas()) {
+            if (conta.getBanco() != null && conta.getBanco().getId() == id) {
+                throw new RegraNegocioException("Não é possível remover o banco pois há contas associadas a ele.");
+            }
+        }
+
         return bancos.remover(idx);
     }
 

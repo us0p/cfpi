@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CFPI — Transações</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/components.css">
+<style>
+  /*
+    Tela: Transações
+
+    Dados -> Transacao / Debito / Credito
+      (dominio.entidades.transacao.*):
+    - descricao, conta, data (yyyy-MM-dd), valor (> 0), categoria
+    - Debito.tipo: "credito" | "avista"
+      Debito.categoria: lazer | mercado | saude | indeterminado |
+                         investimentos | banco
+    - Credito.categoria: pagamento | rendimento
+
+    Mapeamento Swing:
+    - filtros de data (início/fim) -> JSpinner + SpinnerDateModel
+      (yyyy-MM-dd), sem date-picker externo. Usados por
+      Conta.pesquisarTransacoesPorPeriodo(...)
+    - filtro "Tipo"     -> JComboBox<String> ("Todos" | "Débito" | "Crédito")
+    - filtro "Categoria"-> JComboBox<String>, repopulado via ItemListener
+      quando "Tipo" muda (categorias do Debito vs. Credito)
+    - .btn-primary "Nova transação" -> TransacaoFormDialog (já existente) em
+      modo criação
+    - .list -> JList<Transacao> + TransacaoListItemPanel (já existente),
+      ordenado por data desc (mais recentes no topo)
+    - botão lápis   -> TransacaoFormDialog em modo edição
+    - botão lixeira -> ConfirmacaoDialog antes de
+      TransacoesController.remover(id) (que chama
+      Conta.removerTransacao(id), revertendo o efeito sobre a conta)
+  */
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">CFPI</div>
+      <ul class="sidebar-nav">
+        <li><a class="sidebar-nav-item" href="02-homepage.html">Dashboard</a></li>
+        <li><a class="sidebar-nav-item" href="05-contas.html">Contas</a></li>
+        <li><a class="sidebar-nav-item active" href="04-transacoes.html">Transações</a></li>
+        <li><a class="sidebar-nav-item" href="03-objetivos.html">Objetivos</a></li>
+        <li><a class="sidebar-nav-item" href="06-investimentos.html">Investimentos</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="sidebar-nav-item">Importar</div>
+        <div class="sidebar-nav-item">Exportar</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="page-header">
+        <h1 class="page-title">Transações</h1>
+        <div class="page-actions">
+          <button class="btn btn-primary">+ Nova transação</button>
+        </div>
+      </div>
+
+      <div class="filter-bar card">
+        <div class="field">
+          <label for="data-inicio">De</label>
+          <input class="input" id="data-inicio" type="text" value="05/06/2026" placeholder="dd/mm/aaaa">
+        </div>
+        <div class="field">
+          <label for="data-fim">Até</label>
+          <input class="input" id="data-fim" type="text" value="12/06/2026" placeholder="dd/mm/aaaa">
+        </div>
+        <div class="field">
+          <label for="tipo">Tipo</label>
+          <select class="select" id="tipo">
+            <option>Todos</option>
+            <option>Débito</option>
+            <option>Crédito</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="categoria">Categoria</label>
+          <select class="select" id="categoria">
+            <option>Todas</option>
+            <option>Lazer</option>
+            <option>Mercado</option>
+            <option>Saúde</option>
+            <option>Indeterminado</option>
+            <option>Investimentos</option>
+            <option>Banco</option>
+            <option>Pagamento</option>
+            <option>Rendimento</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="list">
+        <div class="list-item">
+          <div class="badge badge-debito">&darr;</div>
+          <div class="list-item-main">
+            <div class="list-item-field"><span class="field-label">Débito:</span><span class="field-value">Crédito</span></div>
+            <div class="list-item-field"><span class="field-label">Categoria:</span><span class="field-value">Indeterminado</span></div>
+            <div class="list-item-field"><span class="field-label">Data:</span><span class="field-value">11/06/2026</span></div>
+            <div class="list-item-field"><span class="field-label">Descrição:</span><span class="field-value">Pagamento para Anima Educação</span></div>
+          </div>
+          <div class="list-item-value value-negative">R$ 2.500,00</div>
+          <div class="list-item-actions">
+            <button class="btn-icon" title="Editar transação">&#9998;</button>
+            <button class="btn-icon btn-icon--danger" title="Remover transação">&#128465;</button>
+          </div>
+        </div>
+
+        <div class="list-item">
+          <div class="badge badge-credito">&uarr;</div>
+          <div class="list-item-main">
+            <div class="list-item-field"><span class="field-label">Crédito</span></div>
+            <div class="list-item-field"><span class="field-label">Categoria:</span><span class="field-value">Pagamento</span></div>
+            <div class="list-item-field"><span class="field-label">Data:</span><span class="field-value">10/06/2026</span></div>
+            <div class="list-item-field"><span class="field-label">Descrição:</span><span class="field-value">Salário</span></div>
+          </div>
+          <div class="list-item-value value-positive">R$ 4.200,00</div>
+          <div class="list-item-actions">
+            <button class="btn-icon" title="Editar transação">&#9998;</button>
+            <button class="btn-icon btn-icon--danger" title="Remover transação">&#128465;</button>
+          </div>
+        </div>
+
+        <div class="list-item">
+          <div class="badge badge-debito">&darr;</div>
+          <div class="list-item-main">
+            <div class="list-item-field"><span class="field-label">Débito:</span><span class="field-value">À vista</span></div>
+            <div class="list-item-field"><span class="field-label">Categoria:</span><span class="field-value">Mercado</span></div>
+            <div class="list-item-field"><span class="field-label">Data:</span><span class="field-value">09/06/2026</span></div>
+            <div class="list-item-field"><span class="field-label">Descrição:</span><span class="field-value">Compras da semana</span></div>
+          </div>
+          <div class="list-item-value value-negative">R$ 380,00</div>
+          <div class="list-item-actions">
+            <button class="btn-icon" title="Editar transação">&#9998;</button>
+            <button class="btn-icon btn-icon--danger" title="Remover transação">&#128465;</button>
+          </div>
+        </div>
+
+        <div class="list-item">
+          <div class="badge badge-debito">&darr;</div>
+          <div class="list-item-main">
+            <div class="list-item-field"><span class="field-label">Débito:</span><span class="field-value">Crédito</span></div>
+            <div class="list-item-field"><span class="field-label">Categoria:</span><span class="field-value">Lazer</span></div>
+            <div class="list-item-field"><span class="field-label">Data:</span><span class="field-value">07/06/2026</span></div>
+            <div class="list-item-field"><span class="field-label">Descrição:</span><span class="field-value">Cinema com amigos</span></div>
+          </div>
+          <div class="list-item-value value-negative">R$ 120,00</div>
+          <div class="list-item-actions">
+            <button class="btn-icon" title="Editar transação">&#9998;</button>
+            <button class="btn-icon btn-icon--danger" title="Remover transação">&#128465;</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -124,17 +124,17 @@ public class Debito extends Transacao {
         String tip = tipo != null ? tipo.trim().toLowerCase() : "";
 
         if (cat.equals("banco")) {
-            
-            conta.setValorConta(conta.getValorConta() - getValor());
+
+            conta.ajustarValorConta(-getValor());
             conta.setLimiteCreditoUtilizado(Math.max(0, conta.getLimiteCreditoUtilizado() - getValor()));
 
         } else if (tip.equals("credito")) {
-            
+
             conta.setLimiteCreditoUtilizado(conta.getLimiteCreditoUtilizado() + getValor());
 
         } else {
-            
-            conta.setValorConta(conta.getValorConta() - getValor());
+
+            conta.ajustarValorConta(-getValor());
         }
     }
 
@@ -152,17 +152,17 @@ public class Debito extends Transacao {
         String tip = tipo != null ? tipo.trim().toLowerCase() : "";
 
         if (cat.equals("banco")) {
-            
-            conta.setValorConta(conta.getValorConta() + getValor());
+
+            conta.ajustarValorConta(getValor());
             conta.setLimiteCreditoUtilizado(conta.getLimiteCreditoUtilizado() + getValor());
 
         } else if (tip.equals("credito")) {
-            
+
             conta.setLimiteCreditoUtilizado(conta.getLimiteCreditoUtilizado() - getValor());
 
         } else {
-            
-            conta.setValorConta(conta.getValorConta() + getValor());
+
+            conta.ajustarValorConta(getValor());
         }
     }
 }

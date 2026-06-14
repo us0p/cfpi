@@ -344,7 +344,7 @@ public abstract class Investimento implements Identificavel {
         if (conta == null) return;
 
         if ("compra".equals(operacao)) {
-            conta.setValorConta(conta.getValorConta() - valor * quantidade);
+            conta.ajustarValorConta(-(valor * quantidade));
 
         } else if ("venda".equals(operacao)) {
             double somaValorQuantidade = 0;
@@ -366,7 +366,7 @@ public abstract class Investimento implements Identificavel {
             this.imposto = Math.max(0, (valor - custoMedioCompra) * quantidade) * getImpostoPadrao();
             this.valorRealizado = valor * quantidade - this.imposto;
 
-            conta.setValorConta(conta.getValorConta() + this.valorRealizado);
+            conta.ajustarValorConta(this.valorRealizado);
         }
     }
 
@@ -388,9 +388,9 @@ public abstract class Investimento implements Identificavel {
         if (conta == null) return;
 
         if ("compra".equals(operacao)) {
-            conta.setValorConta(conta.getValorConta() + valor * quantidade);
+            conta.ajustarValorConta(valor * quantidade);
         } else if ("venda".equals(operacao)) {
-            conta.setValorConta(conta.getValorConta() - valorRealizado);
+            conta.ajustarValorConta(-valorRealizado);
         }
     }
 }

@@ -74,7 +74,7 @@ public class Credito extends Transacao {
      public void aplicarEfeito() {
         Conta conta = getConta();
         if (conta != null) {
-            conta.setValorConta(conta.getValorConta() + getValor());
+            conta.ajustarValorConta(getValor());
         }
     }
     /**
@@ -85,7 +85,7 @@ public class Credito extends Transacao {
     public void reverterEfeito() {
         Conta conta = getConta();
         if (conta != null) {
-            conta.setValorConta(conta.getValorConta() - getValor());
+            conta.ajustarValorConta(-getValor());
         }
     }
 }

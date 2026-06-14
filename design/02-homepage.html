@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CFPI — Homepage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/components.css">
+<style>
+  /*
+    Tela: Homepage / Dashboard
+
+    Dados -> DashboardDados (apresentacao.dashboard.DashboardDados), já
+    existente:
+    - saldoTotal              -> card "Saldo total"
+    - percentualLimiteConsumido -> donut "Limite de crédito consumido"
+    - gastosPorCategoria      -> gráfico de barras (com filtro por categoria)
+    - crescimentoPatrimonio   -> gráfico de linhas (com filtro por categoria)
+    - transacoesRecentes      -> lista "Transações da última semana"
+    - objetivoPrincipal / diasRestantesObjetivo -> NOVO card "Objetivo
+      principal" (não existe na Homepage atual do Figma; segue o mesmo
+      estilo de card branco)
+
+    Mapeamento Swing:
+    - .sidebar           -> apresentacao.shell.Sidebar (já existente)
+    - .cards-row (topo)  -> JPanel com GridLayout(1, 3, gap, 0)
+    - donut              -> apresentacao.designsystem.CircularProgressDonut
+                            (já existente)
+    - .chart-card barras -> apresentacao.dashboard.BarChartCategoriaPanel
+                            (já existente) + JComboBox de categoria
+    - .chart-card linha  -> apresentacao.dashboard.LineChartPatrimonioPanel
+                            (já existente) + JComboBox de categoria
+    - .list (transações) -> JList<Transacao> + TransacaoListItemPanel
+                            dentro de JScrollPane
+
+    Decisão de design: a barra de janela customizada (minimizar/maximizar/
+    fechar) do mockup da Homepage do Figma foi omitida — usar a decoração
+    nativa da janela (JFrame padrão) evita complexidade de
+    setUndecorated(true) + arrasto manual da janela.
+  */
+  .chart-card { flex: 1; min-width: 360px; }
+  .objetivo-progress { margin-top: var(--space-2); }
+  .objetivo-dias {
+    font-family: var(--font-numeric);
+    font-weight: 600;
+    font-size: var(--fs-xl);
+    color: var(--fern);
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">CFPI</div>
+      <ul class="sidebar-nav">
+        <li><a class="sidebar-nav-item active" href="02-homepage.html">Dashboard</a></li>
+        <li><a class="sidebar-nav-item" href="05-contas.html">Contas</a></li>
+        <li><a class="sidebar-nav-item" href="04-transacoes.html">Transações</a></li>
+        <li><a class="sidebar-nav-item" href="03-objetivos.html">Objetivos</a></li>
+        <li><a class="sidebar-nav-item" href="06-investimentos.html">Investimentos</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="sidebar-nav-item">Importar</div>
+        <div class="sidebar-nav-item">Exportar</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+      </div>
+
+      <!-- Cards de resumo -->
+      <div class="cards-row">
+        <div class="card card--destaque">
+          <p class="card-label">Saldo total</p>
+          <p class="card-value">R$ 15.000,00</p>
+          <p class="card-subtext">Soma do saldo de todas as contas</p>
+        </div>
+
+        <div class="card" style="display:flex; align-items:center; gap: var(--space-3);">
+          <div class="donut" style="--pct: 95;">
+            <div class="donut-inner">95%</div>
+          </div>
+          <div>
+            <p class="card-label">Limite de crédito consumido</p>
+            <p class="card-subtext">R$ 9.500,00 de R$ 10.000,00 utilizados</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <p class="card-label">Objetivo principal</p>
+          <p class="card-value">Viagem para o Japão</p>
+          <p class="card-subtext">Meta: R$ 20.000,00</p>
+          <div class="objetivo-progress">
+            <span class="objetivo-dias">128 dias</span>
+            <span class="text-muted"> restantes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráficos -->
+      <div class="cards-row">
+        <div class="card chart-card">
+          <div class="card-header">
+            <p class="section-title" style="margin:0;">Volume de gastos por categoria</p>
+            <select class="select">
+              <option>Todas as categorias</option>
+              <option>Lazer</option>
+              <option>Mercado</option>
+              <option>Saúde</option>
+              <option>Investimentos</option>
+              <option>Banco</option>
+              <option>Indeterminado</option>
+            </select>
+          </div>
+          <div class="chart-area">
+            <div class="bar-chart">
+              <div class="bar-col">
+                <div class="bar" style="height: 60%;"></div>
+                <span class="bar-label">Lazer</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar" style="height: 90%;"></div>
+                <span class="bar-label">Mercado</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar" style="height: 35%;"></div>
+                <span class="bar-label">Saúde</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar" style="height: 75%;"></div>
+                <span class="bar-label">Invest.</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar" style="height: 45%;"></div>
+                <span class="bar-label">Banco</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar" style="height: 20%;"></div>
+                <span class="bar-label">Outros</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-header">
+            <p class="section-title" style="margin:0;">Crescimento de patrimônio</p>
+            <select class="select">
+              <option>Todas as categorias</option>
+              <option>Contas</option>
+              <option>Investimentos</option>
+            </select>
+          </div>
+          <div class="chart-area">
+            <svg class="line-chart" viewBox="0 0 300 220" preserveAspectRatio="none">
+              <polyline
+                fill="none"
+                stroke="#628B48"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                points="10,190 60,170 110,150 160,140 210,90 260,40" />
+              <circle cx="10" cy="190" r="4" fill="#628B48" />
+              <circle cx="60" cy="170" r="4" fill="#628B48" />
+              <circle cx="110" cy="150" r="4" fill="#628B48" />
+              <circle cx="160" cy="140" r="4" fill="#628B48" />
+              <circle cx="210" cy="90" r="4" fill="#628B48" />
+              <circle cx="260" cy="40" r="4" fill="#628B48" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transações da última semana -->
+      <div>
+        <p class="section-title">Transações da última semana</p>
+        <div class="list">
+          <div class="list-item">
+            <div class="badge badge-debito">&darr;</div>
+            <div class="list-item-main">
+              <div class="list-item-field"><span class="field-label">Débito:</span><span class="field-value">Crédito</span></div>
+              <div class="list-item-field"><span class="field-label">Categoria:</span><span class="field-value">Indeterminado</span></div>
+              <div class="list-item-field"><span class="field-label">Data:</span><span class="field-value">11/06/2026 - 12:51</span></div>
+              <div class="list-item-field"><span class="field-label">Descrição:</span><span class="field-value">Pagamento para Anima Educação</span></div>
+            </div>
+            <div class="list-item-value value-negative">R$ 2.500,00</div>
+          </div>
+
+          <div class="list-item">
+            <div class="badge badge-credito">&uarr;</div>
+            <div class="list-item-main">
+              <div class="list-item-field"><span class="field-label">Crédito</span></div>
+              <div class="list-item-field"><span class="field-label">Categoria:</span><span class="field-value">Pagamento</span></div>
+              <div class="list-item-field"><span class="field-label">Data:</span><span class="field-value">10/06/2026 - 09:15</span></div>
+              <div class="list-item-field"><span class="field-label">Descrição:</span><span class="field-value">Salário</span></div>
+            </div>
+            <div class="list-item-value value-positive">R$ 4.200,00</div>
+          </div>
+
+          <div class="list-item">
+            <div class="badge badge-debito">&darr;</div>
+            <div class="list-item-main">
+              <div class="list-item-field"><span class="field-label">Débito:</span><span class="field-value">À vista</span></div>
+              <div class="list-item-field"><span class="field-label">Categoria:</span><span class="field-value">Mercado</span></div>
+              <div class="list-item-field"><span class="field-label">Data:</span><span class="field-value">09/06/2026 - 18:40</span></div>
+              <div class="list-item-field"><span class="field-label">Descrição:</span><span class="field-value">Compras da semana</span></div>
+            </div>
+            <div class="list-item-value value-negative">R$ 380,00</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

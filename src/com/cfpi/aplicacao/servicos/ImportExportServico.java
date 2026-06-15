@@ -218,6 +218,26 @@ public class ImportExportServico {
     }
 
     // -------------------------------------------------------------------------
+    // Seed
+    // -------------------------------------------------------------------------
+
+    @SuppressWarnings("unchecked")
+    public BancoStoreImpl carregarBancosDoArquivoSeed(String json, Usuario usuario) {
+        BancoStoreImpl bancoStore = new BancoStoreImpl(usuario);
+        List<Object> bancosList = (List<Object>) parseJson(json);
+        for (Object bancoObj : bancosList) {
+            Map<String, Object> bancoMap = (Map<String, Object>) bancoObj;
+            String nome = (String) bancoMap.get("nome");
+            int codigo = ((Double) bancoMap.get("codigo")).intValue();
+            try {
+                bancoStore.inserir(new Banco(nome, codigo));
+            } catch (Exception ignored) {
+            }
+        }
+        return bancoStore;
+    }
+
+    // -------------------------------------------------------------------------
     // Import
     // -------------------------------------------------------------------------
 

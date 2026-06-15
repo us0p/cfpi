@@ -49,14 +49,14 @@ public class Banco implements Identificavel {
         if (nome == null || nome.trim().length() <= 3) {
             throw new ValidacaoException("O nome do banco deve ter mais de 3 caracteres.");
         }
-        if (!nome.trim().matches("[\\p{L} ]+")) {
-            throw new ValidacaoException("O nome do banco deve conter apenas letras e espaços.");
+        if (!nome.trim().matches("[\\p{L}\\p{N} .()\\-&,/]+")) {
+            throw new ValidacaoException("O nome do banco contém caracteres inválidos.");
         }
     }
 
     private static void validarCodigo(int codigo) {
-        if (codigo < 100 || codigo > 999) {
-            throw new ValidacaoException("O código do banco deve estar entre 100 e 999.");
+        if (codigo < 1 || codigo > 999) {
+            throw new ValidacaoException("O código do banco deve estar entre 1 e 999.");
         }
     }
 

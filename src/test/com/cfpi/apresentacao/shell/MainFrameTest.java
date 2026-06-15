@@ -21,7 +21,7 @@ class MainFrameTest {
 
     @Test
     void mostrarTelaChamaAtualizarNoPainelQueImplementaTelaAtualizavel() {
-        MainFrame mainFrame = new MainFrame(novaSessaoComUsuario());
+        MainFrame mainFrame = new MainFrame(novaSessaoComUsuario(), () -> {});
         AtomicInteger chamadas = new AtomicInteger();
 
         class PainelAtualizavel extends JPanel implements TelaAtualizavel {
@@ -40,7 +40,7 @@ class MainFrameTest {
 
     @Test
     void mostrarTelaNaoFalhaParaPainelQueNaoImplementaTelaAtualizavel() {
-        MainFrame mainFrame = new MainFrame(novaSessaoComUsuario());
+        MainFrame mainFrame = new MainFrame(novaSessaoComUsuario(), () -> {});
 
         assertDoesNotThrow(() -> mainFrame.mostrarTela(Tela.CONTAS));
     }

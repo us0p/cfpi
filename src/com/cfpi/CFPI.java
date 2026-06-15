@@ -2,6 +2,7 @@ package com.cfpi;
 
 import com.cfpi.aplicacao.servicos.AvaliadorDeAtivosServico;
 import com.cfpi.aplicacao.servicos.CalculadoraPrazoObjetivoServico;
+import com.cfpi.aplicacao.servicos.ImportExportServico;
 import com.cfpi.apresentacao.cadastro.CadastroUsuarioController;
 import com.cfpi.apresentacao.cadastro.CadastroUsuarioView;
 import com.cfpi.apresentacao.contas.ContasController;
@@ -38,7 +39,11 @@ public class CFPI {
                     new CalculadoraPrazoObjetivoServico(),
                     new AvaliadorDeAtivosServico(() -> sessao[0].getUsuarioAtual()));
             sessao[0] = appSession;
-            MainFrame mainFrame = new MainFrame(appSession);
+
+            ImportExportServico importExport = new ImportExportServico();
+            Runnable aoExportar = () -> importExport.exportar(appSession);
+
+            MainFrame mainFrame = new MainFrame(appSession, aoExportar);
 
             Consumer<Tela> navegador = tela -> {
                 if (tela == Tela.DASHBOARD && appSession.getUsuarioAtual() != null) {
@@ -47,7 +52,7 @@ public class CFPI {
                 mainFrame.mostrarTela(tela);
             };
 
-            CadastroUsuarioController cadastroController = new CadastroUsuarioController(appSession, navegador);
+            CadastroUsuarioController cadastroController = new CadastroUsuarioController(appSession, navegador, importExport);
             mainFrame.registrarPainel(Tela.CADASTRO_USUARIO, new CadastroUsuarioView(cadastroController));
             mainFrame.mostrarTela(Tela.CADASTRO_USUARIO);
 
@@ -66,11 +71,15 @@ public class CFPI {
         ObjetivosController objetivosController = new ObjetivosController(appSession.getUsuarioAtual(), new ObjetivosViewModel());
         mainFrame.registrarPainel(Tela.OBJETIVOS, new ObjetivosView(objetivosController));
 
-        BancoStoreImpl bancoStore = new BancoStoreImpl(appSession.getUsuarioAtual());
-        bancoStore.inserir(new Banco("Banco do Brasil", 100));
-        bancoStore.inserir(new Banco("Itaú", 341));
-        bancoStore.inserir(new Banco("Bradesco", 237));
-        bancoStore.inserir(new Banco("Caixa", 104));
+        BancoStoreImpl bancoStore = appSession.getBancoStore();
+        if (bancoStore == null) {
+            bancoStore = new BancoStoreImpl(appSession.getUsuarioAtual());
+            bancoStore.inserir(new Banco("Banco do Brasil", 100));
+            bancoStore.inserir(new Banco("Itaú", 341));
+            bancoStore.inserir(new Banco("Bradesco", 237));
+            bancoStore.inserir(new Banco("Caixa", 104));
+            appSession.setBancoStore(bancoStore);
+        }
         ContasController contasController = new ContasController(appSession.getUsuarioAtual(), bancoStore, new ContasViewModel());
         mainFrame.registrarPainel(Tela.CONTAS, new ContasView(contasController));
 

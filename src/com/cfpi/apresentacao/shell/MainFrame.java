@@ -27,7 +27,7 @@ public class MainFrame extends JFrame {
     private final Sidebar sidebar;
     private final Map<Tela, JPanel> paineis = new EnumMap<>(Tela.class);
 
-    public MainFrame(AppSession appSession) {
+    public MainFrame(AppSession appSession, Runnable aoExportar) {
         super("CFPI");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
         telas = new JPanel(cardLayout);
         telas.setBackground(Cores.FUNDO_PRINCIPAL);
 
-        sidebar = new Sidebar(this::mostrarTela);
+        sidebar = new Sidebar(this::mostrarTela, aoExportar);
 
         for (Tela tela : Tela.values()) {
             JPanel painel = criarPainelPlaceholder(tela);

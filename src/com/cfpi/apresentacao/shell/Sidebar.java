@@ -24,7 +24,7 @@ public class Sidebar extends JPanel {
 
     private final Map<Tela, SidebarButton> botoes = new EnumMap<>(Tela.class);
 
-    public Sidebar(Consumer<Tela> aoNavegar) {
+    public Sidebar(Consumer<Tela> aoNavegar, Runnable aoExportar) {
         setLayout(new BorderLayout(0, Espacamentos.ESPACO_3));
         setBackground(Cores.SIDEBAR_FUNDO);
         setPreferredSize(new Dimension(240, 0));
@@ -49,9 +49,9 @@ public class Sidebar extends JPanel {
         JPanel rodape = new JPanel();
         rodape.setOpaque(false);
         rodape.setLayout(new BoxLayout(rodape, BoxLayout.Y_AXIS));
-        rodape.add(SidebarButton.rodape("Importar"));
-        rodape.add(Box.createVerticalStrut(Espacamentos.ESPACO_1));
-        rodape.add(SidebarButton.rodape("Exportar"));
+        SidebarButton botaoExportar = SidebarButton.rodape("Exportar");
+        botaoExportar.addActionListener(e -> aoExportar.run());
+        rodape.add(botaoExportar);
 
         add(titulo, BorderLayout.NORTH);
         add(navegacao, BorderLayout.CENTER);

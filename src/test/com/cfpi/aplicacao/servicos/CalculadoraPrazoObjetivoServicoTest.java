@@ -30,7 +30,7 @@ class CalculadoraPrazoObjetivoServicoTest {
     @Test
     void retornaDiasMaximoQuandoFluxoMensalNaoEPositivo() {
         Usuario usuario = novoUsuario();
-        Conta conta = new Conta("corrente", 0.0, "111111", "BRL", null, usuario, 0.0);
+        Conta conta = new Conta("corrente", 500.0, "111111", "BRL", null, usuario, 0.0);
         new Debito("Mercado", conta, "2026-01-10", 500.0, "mercado", "avista");
         Objetivo objetivo = new Objetivo("Viagem", 5000.0, usuario);
 

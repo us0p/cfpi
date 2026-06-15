@@ -2,6 +2,7 @@ package com.cfpi.apresentacao.shell;
 
 import com.cfpi.apresentacao.comum.AvaliadorDeAtivos;
 import com.cfpi.apresentacao.comum.CalculadoraPrazoObjetivo;
+import com.cfpi.dominio.entidades.banco.BancoStoreImpl;
 import com.cfpi.dominio.entidades.usuario.Usuario;
 
 /**
@@ -13,6 +14,7 @@ import com.cfpi.dominio.entidades.usuario.Usuario;
 public class AppSession {
 
     private Usuario usuarioAtual;
+    private BancoStoreImpl bancoStore;
     private final CalculadoraPrazoObjetivo calculadoraPrazoObjetivo;
     private final AvaliadorDeAtivos avaliadorDeAtivos;
 
@@ -27,6 +29,14 @@ public class AppSession {
 
     public void setUsuarioAtual(Usuario usuarioAtual) {
         this.usuarioAtual = usuarioAtual;
+    }
+
+    public BancoStoreImpl getBancoStore() {
+        return bancoStore;
+    }
+
+    public void setBancoStore(BancoStoreImpl bancoStore) {
+        this.bancoStore = bancoStore;
     }
 
     public CalculadoraPrazoObjetivo getCalculadoraPrazoObjetivo() {

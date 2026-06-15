@@ -1,6 +1,7 @@
 package com.cfpi.dominio.entidades.transacao;
 
 import com.cfpi.dominio.entidades.conta.Conta;
+import com.cfpi.dominio.excecoes.RegraNegocioException;
 import com.cfpi.dominio.excecoes.ValidacaoException;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,7 @@ class DebitoTest {
 
     @Test
     void criarDebitoComTipoAvistaNaoLancaExcecao() {
-        Conta conta = new Conta();
+        Conta conta = new Conta("corrente", 500.0, "123456", "BRL", null, null, 0.0);
 
         assertDoesNotThrow(() -> new Debito("Mercado", conta, "2026-06-10", 100.0, "mercado", "avista"));
     }
@@ -33,7 +34,7 @@ class DebitoTest {
 
     @Test
     void criarDebitoComCategoriaValidaNaoLancaExcecao() {
-        Conta conta = new Conta();
+        Conta conta = new Conta("corrente", 500.0, "123456", "BRL", null, null, 0.0);
 
         assertDoesNotThrow(() -> new Debito("Cinema", conta, "2026-06-10", 100.0, "lazer", "avista"));
     }
@@ -88,7 +89,7 @@ class DebitoTest {
 
     @Test
     void setTipoComValorInvalidoLancaValidacaoException() {
-        Conta conta = new Conta();
+        Conta conta = new Conta("corrente", 500.0, "123456", "BRL", null, null, 0.0);
         Debito debito = new Debito("Mercado", conta, "2026-06-10", 100.0, "mercado", "avista");
 
         assertThrows(ValidacaoException.class, () -> debito.setTipo("boleto"));
@@ -96,9 +97,17 @@ class DebitoTest {
 
     @Test
     void setCategoriaComValorInvalidoLancaValidacaoException() {
-        Conta conta = new Conta();
+        Conta conta = new Conta("corrente", 500.0, "123456", "BRL", null, null, 0.0);
         Debito debito = new Debito("Mercado", conta, "2026-06-10", 100.0, "mercado", "avista");
 
         assertThrows(ValidacaoException.class, () -> debito.setCategoria("outra"));
+    }
+
+    @Test
+    void criarDebitoTipoAvistaComValorMaiorQueSaldoLancaRegraNegocioException() {
+        Conta conta = new Conta("corrente", 5000.0, "123456", "BRL", null, null, 0.0);
+
+        assertThrows(RegraNegocioException.class, () ->
+                new Debito("Supermercado", conta, "2026-06-10", 6000.0, "mercado", "avista"));
     }
 }

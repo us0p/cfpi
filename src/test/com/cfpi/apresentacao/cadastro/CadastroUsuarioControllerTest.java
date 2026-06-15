@@ -1,5 +1,6 @@
 package com.cfpi.apresentacao.cadastro;
 
+import com.cfpi.aplicacao.servicos.ImportExportServico;
 import com.cfpi.apresentacao.comum.AvaliadorDeAtivosFake;
 import com.cfpi.apresentacao.comum.CalculadoraPrazoObjetivoFake;
 import com.cfpi.apresentacao.shell.AppSession;
@@ -28,7 +29,7 @@ class CadastroUsuarioControllerTest {
     @Test
     void cadastrarComEntradaValidaCriaUsuarioESetaNaSessao() {
         AppSession appSession = new AppSession(new CalculadoraPrazoObjetivoFake(0), new AvaliadorDeAtivosFake(0.0));
-        CadastroUsuarioController controller = new CadastroUsuarioController(appSession, tela -> { });
+        CadastroUsuarioController controller = new CadastroUsuarioController(appSession, tela -> { }, new ImportExportServico());
 
         List<String> erros = controller.cadastrar(viewModelValido());
 
@@ -41,7 +42,7 @@ class CadastroUsuarioControllerTest {
     void cadastrarComEntradaValidaNavegaParaDashboard() {
         AppSession appSession = new AppSession(new CalculadoraPrazoObjetivoFake(0), new AvaliadorDeAtivosFake(0.0));
         List<Tela> telasNavegadas = new java.util.ArrayList<>();
-        CadastroUsuarioController controller = new CadastroUsuarioController(appSession, telasNavegadas::add);
+        CadastroUsuarioController controller = new CadastroUsuarioController(appSession, telasNavegadas::add, new ImportExportServico());
 
         controller.cadastrar(viewModelValido());
 
@@ -51,7 +52,7 @@ class CadastroUsuarioControllerTest {
     @Test
     void cadastrarComNomeInvalidoRetornaErroENaoAlteraSessao() {
         AppSession appSession = new AppSession(new CalculadoraPrazoObjetivoFake(0), new AvaliadorDeAtivosFake(0.0));
-        CadastroUsuarioController controller = new CadastroUsuarioController(appSession, tela -> { });
+        CadastroUsuarioController controller = new CadastroUsuarioController(appSession, tela -> { }, new ImportExportServico());
         CadastroUsuarioViewModel viewModel = viewModelValido();
         viewModel.setNome("An");
 
@@ -65,7 +66,7 @@ class CadastroUsuarioControllerTest {
     void cadastrarComEntradaInvalidaNaoNavega() {
         AppSession appSession = new AppSession(new CalculadoraPrazoObjetivoFake(0), new AvaliadorDeAtivosFake(0.0));
         List<Tela> telasNavegadas = new java.util.ArrayList<>();
-        CadastroUsuarioController controller = new CadastroUsuarioController(appSession, telasNavegadas::add);
+        CadastroUsuarioController controller = new CadastroUsuarioController(appSession, telasNavegadas::add, new ImportExportServico());
         CadastroUsuarioViewModel viewModel = viewModelValido();
         viewModel.setCpf("123");
 

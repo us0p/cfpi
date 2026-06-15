@@ -1,0 +1,306 @@
+[
+  {
+    "nome": "Banco do Brasil S.A.",
+    "codigo": 1
+  },
+  {
+    "nome": "Banco da Amazônia S.A.",
+    "codigo": 3
+  },
+  {
+    "nome": "Banco do Nordeste do Brasil S.A.",
+    "codigo": 4
+  },
+  {
+    "nome": "Banco Nacional de Desenvolvimento Econômico e Social - BNDES",
+    "codigo": 7
+  },
+  {
+    "nome": "Banestes S.A. Banco do Estado do Espírito Santo",
+    "codigo": 21
+  },
+  {
+    "nome": "Banco Bandepe S.A.",
+    "codigo": 24
+  },
+  {
+    "nome": "Banco Alfa S.A.",
+    "codigo": 25
+  },
+  {
+    "nome": "Banco Itaú Consignado S.A.",
+    "codigo": 29
+  },
+  {
+    "nome": "Banco Santander (Brasil) S.A.",
+    "codigo": 33
+  },
+  {
+    "nome": "Banco Bradesco BBI S.A.",
+    "codigo": 36
+  },
+  {
+    "nome": "Banco do Estado do Pará S.A.",
+    "codigo": 37
+  },
+  {
+    "nome": "Banco Cargill S.A.",
+    "codigo": 40
+  },
+  {
+    "nome": "Banco do Estado do Rio Grande do Sul S.A. (Banrisul)",
+    "codigo": 41
+  },
+  {
+    "nome": "Banco do Estado de Sergipe S.A. (Banese)",
+    "codigo": 47
+  },
+  {
+    "nome": "Hipercard Banco Múltiplo S.A.",
+    "codigo": 62
+  },
+  {
+    "nome": "Banco Bradescard S.A.",
+    "codigo": 63
+  },
+  {
+    "nome": "Goldman Sachs do Brasil Banco Múltiplo S.A.",
+    "codigo": 64
+  },
+  {
+    "nome": "Banco Andbank (Brasil) S.A.",
+    "codigo": 65
+  },
+  {
+    "nome": "Banco Morgan Stanley S.A.",
+    "codigo": 66
+  },
+  {
+    "nome": "Banco Crefisa S.A.",
+    "codigo": 69
+  },
+  {
+    "nome": "BRB - Banco de Brasília S.A.",
+    "codigo": 70
+  },
+  {
+    "nome": "Banco J. Safra S.A.",
+    "codigo": 74
+  },
+  {
+    "nome": "Banco Inter S.A.",
+    "codigo": 77
+  },
+  {
+    "nome": "Banco da China Brasil S.A.",
+    "codigo": 83
+  },
+  {
+    "nome": "Banco B3 S.A.",
+    "codigo": 96
+  },
+  {
+    "nome": "Caixa Econômica Federal",
+    "codigo": 104
+  },
+  {
+    "nome": "Banco BOCOM BBM S.A.",
+    "codigo": 107
+  },
+  {
+    "nome": "Banco Agibank S.A.",
+    "codigo": 121
+  },
+  {
+    "nome": "Banco Genial S.A.",
+    "codigo": 125
+  },
+  {
+    "nome": "ICBC do Brasil Banco Múltiplo S.A.",
+    "codigo": 132
+  },
+  {
+    "nome": "Banco BS2 S.A.",
+    "codigo": 218
+  },
+  {
+    "nome": "Banco Credit Agricole Brasil S.A.",
+    "codigo": 222
+  },
+  {
+    "nome": "Banco Fibra S.A.",
+    "codigo": 224
+  },
+  {
+    "nome": "Banco Bradesco S.A.",
+    "codigo": 237
+  },
+  {
+    "nome": "Banco ABC Brasil S.A.",
+    "codigo": 246
+  },
+  {
+    "nome": "Paraná Banco S.A.",
+    "codigo": 254
+  },
+  {
+    "nome": "Nu Pagamentos S.A. (Nubank)",
+    "codigo": 260
+  },
+  {
+    "nome": "Banco Fator S.A.",
+    "codigo": 265
+  },
+  {
+    "nome": "Banco HSBC S.A.",
+    "codigo": 269
+  },
+  {
+    "nome": "Banco Senff S.A.",
+    "codigo": 276
+  },
+  {
+    "nome": "Banco BTG Pactual S.A.",
+    "codigo": 208
+  },
+  {
+    "nome": "Banco BMG S.A.",
+    "codigo": 318
+  },
+  {
+    "nome": "Mercado Pago - Conta do Mercado Livre",
+    "codigo": 323
+  },
+  {
+    "nome": "Banco C6 S.A.",
+    "codigo": 336
+  },
+  {
+    "nome": "Itaú Unibanco S.A.",
+    "codigo": 341
+  },
+  {
+    "nome": "Banco Société Générale Brasil S.A.",
+    "codigo": 366
+  },
+  {
+    "nome": "Banco Mizuho do Brasil S.A.",
+    "codigo": 370
+  },
+  {
+    "nome": "Banco J. P. Morgan S.A.",
+    "codigo": 376
+  },
+  {
+    "nome": "Banco Mercantil do Brasil S.A.",
+    "codigo": 389
+  },
+  {
+    "nome": "Banco Bradesco Financiamentos S.A.",
+    "codigo": 394
+  },
+  {
+    "nome": "Banco Safra S.A.",
+    "codigo": 422
+  },
+  {
+    "nome": "Banco MUFG Brasil S.A.",
+    "codigo": 456
+  },
+  {
+    "nome": "Banco Sumitomo Mitsui Brasileiro S.A.",
+    "codigo": 464
+  },
+  {
+    "nome": "Banco Caixa Geral - Brasil S.A.",
+    "codigo": 473
+  },
+  {
+    "nome": "Banco ItaúBank S.A.",
+    "codigo": 479
+  },
+  {
+    "nome": "Deutsche Bank S.A. Banco Alemão",
+    "codigo": 487
+  },
+  {
+    "nome": "Banco Credit Suisse (Brasil) S.A.",
+    "codigo": 505
+  },
+  {
+    "nome": "Banco Luso Brasileiro S.A.",
+    "codigo": 600
+  },
+  {
+    "nome": "Banco Industrial do Brasil S.A.",
+    "codigo": 604
+  },
+  {
+    "nome": "Banco Paulista S.A.",
+    "codigo": 611
+  },
+  {
+    "nome": "Banco Guanabara S.A.",
+    "codigo": 612
+  },
+  {
+    "nome": "Banco PAN S.A.",
+    "codigo": 623
+  },
+  {
+    "nome": "Banco C6 Consignado S.A.",
+    "codigo": 626
+  },
+  {
+    "nome": "Banco Rendimento S.A.",
+    "codigo": 633
+  },
+  {
+    "nome": "Banco Pine S.A.",
+    "codigo": 643
+  },
+  {
+    "nome": "Banco Digimais S.A.",
+    "codigo": 654
+  },
+  {
+    "nome": "Banco Daycoval S.A.",
+    "codigo": 707
+  },
+  {
+    "nome": "Banco Semear S.A.",
+    "codigo": 743
+  },
+  {
+    "nome": "Banco Citibank S.A.",
+    "codigo": 745
+  },
+  {
+    "nome": "Banco Rabobank International Brasil S.A.",
+    "codigo": 747
+  },
+  {
+    "nome": "Banco Cooperativo Sicredi S.A.",
+    "codigo": 748
+  },
+  {
+    "nome": "Scotiabank Brasil S.A.",
+    "codigo": 751
+  },
+  {
+    "nome": "Banco BNP Paribas Brasil S.A.",
+    "codigo": 752
+  },
+  {
+    "nome": "Bank of America Merrill Lynch Banco Múltiplo S.A.",
+    "codigo": 755
+  },
+  {
+    "nome": "Banco Cooperativo Sicoob S.A.",
+    "codigo": 756
+  },
+  {
+    "nome": "Banco KEB Hana do Brasil S.A.",
+    "codigo": 757
+  }
+]

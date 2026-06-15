@@ -1,0 +1,853 @@
+{
+  "usuario": {
+    "nome": "Carlos Mendes",
+    "cpf": "98765432100",
+    "telefone": "11987654321",
+    "dataNascimento": "1993-07-22"
+  },
+  "bancos": [
+    {
+      "id": 1,
+      "nome": "Itau Unibanco",
+      "codigo": 341
+    },
+    {
+      "id": 2,
+      "nome": "Banco Nubank",
+      "codigo": 260
+    }
+  ],
+  "contas": [
+    {
+      "id": 1,
+      "tipo": "corrente",
+      "valorConta": 57892.5,
+      "numeroConta": "100001",
+      "moeda": "BRL",
+      "bancoId": 1,
+      "limiteCredito": 2000.0,
+      "limiteCreditoUtilizado": 1250.0,
+      "transacoes": [
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Janeiro",
+          "data": "2025-01-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Spotify e Netflix",
+          "data": "2025-01-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Extra Compras Janeiro",
+          "data": "2025-01-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Feira e Supermercado",
+          "data": "2025-01-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Farmacia Janeiro",
+          "data": "2025-01-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Janeiro",
+          "data": "2025-01-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Reembolso Empresa",
+          "data": "2025-01-31",
+          "valor": 200.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Fevereiro",
+          "data": "2025-02-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Jantar Dia dos Namorados",
+          "data": "2025-02-14",
+          "valor": 200.0,
+          "categoria": "lazer",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Cinema e Streaming",
+          "data": "2025-02-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Delivery Fevereiro",
+          "data": "2025-02-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Supermercado Fevereiro",
+          "data": "2025-02-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Consulta Medica",
+          "data": "2025-02-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Fevereiro",
+          "data": "2025-02-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Marco",
+          "data": "2025-03-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Streaming Marco",
+          "data": "2025-03-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "iFood Marco",
+          "data": "2025-03-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Supermercado Marco",
+          "data": "2025-03-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Farmacia Marco",
+          "data": "2025-03-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Marco",
+          "data": "2025-03-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Abril",
+          "data": "2025-04-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Streaming Abril",
+          "data": "2025-04-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Extra Compras Abril",
+          "data": "2025-04-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Feira Abril",
+          "data": "2025-04-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Plano de Saude",
+          "data": "2025-04-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Abril",
+          "data": "2025-04-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Maio",
+          "data": "2025-05-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Saida Dia do Trabalho",
+          "data": "2025-05-02",
+          "valor": 300.0,
+          "categoria": "lazer",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Streaming Maio",
+          "data": "2025-05-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Delivery Maio",
+          "data": "2025-05-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Supermercado Maio",
+          "data": "2025-05-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Farmacia Maio",
+          "data": "2025-05-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Maio",
+          "data": "2025-05-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Junho",
+          "data": "2025-06-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Streaming Junho",
+          "data": "2025-06-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Delivery Junho",
+          "data": "2025-06-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Supermercado Junho",
+          "data": "2025-06-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Farmacia Junho",
+          "data": "2025-06-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Junho",
+          "data": "2025-06-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Julho",
+          "data": "2025-07-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Streaming Julho",
+          "data": "2025-07-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Delivery Julho",
+          "data": "2025-07-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Supermercado Julho",
+          "data": "2025-07-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Farmacia Julho",
+          "data": "2025-07-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Julho",
+          "data": "2025-07-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Agosto",
+          "data": "2025-08-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Dentista",
+          "data": "2025-08-08",
+          "valor": 500.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Streaming Agosto",
+          "data": "2025-08-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Delivery Agosto",
+          "data": "2025-08-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Supermercado Agosto",
+          "data": "2025-08-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Farmacia Agosto",
+          "data": "2025-08-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Agosto",
+          "data": "2025-08-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Setembro",
+          "data": "2025-09-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Streaming Setembro",
+          "data": "2025-09-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Delivery Setembro",
+          "data": "2025-09-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Supermercado Setembro",
+          "data": "2025-09-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Farmacia Setembro",
+          "data": "2025-09-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Setembro",
+          "data": "2025-09-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Outubro",
+          "data": "2025-10-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Aniversario Festa",
+          "data": "2025-10-12",
+          "valor": 400.0,
+          "categoria": "lazer",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Streaming Outubro",
+          "data": "2025-10-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Delivery Outubro",
+          "data": "2025-10-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Supermercado Outubro",
+          "data": "2025-10-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Farmacia Outubro",
+          "data": "2025-10-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Outubro",
+          "data": "2025-10-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Novembro",
+          "data": "2025-11-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Streaming Novembro",
+          "data": "2025-11-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Delivery Novembro",
+          "data": "2025-11-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Supermercado Novembro",
+          "data": "2025-11-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Farmacia Novembro",
+          "data": "2025-11-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Novembro",
+          "data": "2025-11-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Dezembro",
+          "data": "2025-12-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Festas de Fim de Ano",
+          "data": "2025-12-23",
+          "valor": 600.0,
+          "categoria": "lazer",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Streaming Dezembro",
+          "data": "2025-12-05",
+          "valor": 150.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Delivery Dezembro",
+          "data": "2025-12-10",
+          "valor": 350.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Supermercado Dezembro",
+          "data": "2025-12-20",
+          "valor": 900.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Farmacia Dezembro",
+          "data": "2025-12-25",
+          "valor": 250.0,
+          "categoria": "saude",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Pagamento Fatura Dezembro",
+          "data": "2025-12-28",
+          "valor": 500.0,
+          "categoria": "banco",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Show de Musica",
+          "data": "2026-06-09",
+          "valor": 280.0,
+          "categoria": "lazer",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Supermercado Online",
+          "data": "2026-06-10",
+          "valor": 420.0,
+          "categoria": "mercado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Feira Semanal",
+          "data": "2026-06-11",
+          "valor": 150.0,
+          "categoria": "mercado",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Oculos e Lentes",
+          "data": "2026-06-12",
+          "valor": 350.0,
+          "categoria": "saude",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Jantar Restaurante",
+          "data": "2026-06-13",
+          "valor": 120.0,
+          "categoria": "lazer",
+          "tipo": "avista"
+        },
+        {
+          "tipoClasse": "Debito",
+          "descricao": "Compras Online",
+          "data": "2026-06-14",
+          "valor": 200.0,
+          "categoria": "indeterminado",
+          "tipo": "credito"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Salario Junho 2026",
+          "data": "2026-06-15",
+          "valor": 6500.0,
+          "categoria": "rendimento"
+        }
+      ],
+      "investimentos": [
+        {
+          "tipoClasse": "FII",
+          "nomeAtivo": "HGLG11",
+          "valor": 120.0,
+          "quantidade": 10.0,
+          "imposto": 0.0,
+          "data": "2025-02-15",
+          "valorRealizado": 0.0,
+          "operacao": "compra"
+        },
+        {
+          "tipoClasse": "Acao",
+          "nomeAtivo": "PETR4",
+          "valor": 35.0,
+          "quantidade": 100.0,
+          "imposto": 0.0,
+          "data": "2025-03-15",
+          "valorRealizado": 0.0,
+          "operacao": "compra"
+        },
+        {
+          "tipoClasse": "CDB",
+          "nomeAtivo": "CDB Banco XP",
+          "valor": 50.0,
+          "quantidade": 100.0,
+          "imposto": 0.0,
+          "data": "2025-06-15",
+          "valorRealizado": 0.0,
+          "operacao": "compra"
+        },
+        {
+          "tipoClasse": "Acao",
+          "nomeAtivo": "PETR4",
+          "valor": 40.0,
+          "quantidade": 50.0,
+          "imposto": 37.5,
+          "data": "2025-09-15",
+          "valorRealizado": 1962.5,
+          "operacao": "venda"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "tipo": "poupança",
+      "valorConta": 16000.0,
+      "numeroConta": "200001",
+      "moeda": "BRL",
+      "bancoId": 1,
+      "limiteCredito": 0.0,
+      "limiteCreditoUtilizado": 0.0,
+      "transacoes": [
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Janeiro",
+          "data": "2025-01-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Fevereiro",
+          "data": "2025-02-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Marco",
+          "data": "2025-03-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Abril",
+          "data": "2025-04-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Maio",
+          "data": "2025-05-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Junho",
+          "data": "2025-06-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Julho",
+          "data": "2025-07-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Agosto",
+          "data": "2025-08-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Setembro",
+          "data": "2025-09-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Outubro",
+          "data": "2025-10-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Novembro",
+          "data": "2025-11-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        },
+        {
+          "tipoClasse": "Credito",
+          "descricao": "Deposito Poupanca Dezembro",
+          "data": "2025-12-10",
+          "valor": 500.0,
+          "categoria": "pagamento"
+        }
+      ],
+      "investimentos": []
+    }
+  ],
+  "objetivos": [
+    {
+      "nome": "Viagem para Europa",
+      "valor": 80000.0
+    },
+    {
+      "nome": "Reserva de Emergencia",
+      "valor": 150000.0
+    },
+    {
+      "nome": "Casa Propria",
+      "valor": 500000.0
+    }
+  ]
+}

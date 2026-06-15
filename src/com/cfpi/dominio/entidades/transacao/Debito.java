@@ -1,6 +1,7 @@
 package com.cfpi.dominio.entidades.transacao;
 
 import com.cfpi.dominio.entidades.conta.Conta;
+import com.cfpi.dominio.excecoes.RegraNegocioException;
 import com.cfpi.dominio.excecoes.ValidacaoException;
 import java.util.List;
 
@@ -134,6 +135,9 @@ public class Debito extends Transacao {
 
         } else {
 
+            if (getValor() > conta.getValorConta()) {
+                throw new RegraNegocioException("Saldo insuficiente para realizar o débito.");
+            }
             conta.ajustarValorConta(-getValor());
         }
     }

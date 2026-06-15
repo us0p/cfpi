@@ -35,6 +35,7 @@ public class CadastroUsuarioView extends JPanel {
     private final RoundedTextField campoTelefone;
     private final RoundedTextField campoDataNascimento;
     private final RoundedButton botaoCadastrar;
+    private final RoundedButton botaoImportar;
     private final JLabel erroNome;
     private final JLabel erroCpf;
     private final JLabel erroTelefone;
@@ -104,6 +105,12 @@ public class CadastroUsuarioView extends JPanel {
         botaoCadastrar.setAlignmentX(Component.CENTER_ALIGNMENT);
         botaoCadastrar.addActionListener(e -> aoClicarCadastrar(controller));
 
+        botaoImportar = new RoundedButton("Importar dados", Espacamentos.RAIO, Cores.FUNDO_PRINCIPAL, Cores.PRIMARIO);
+        botaoImportar.setPreferredSize(new Dimension(LARGURA_CAMPO, 44));
+        botaoImportar.setMaximumSize(new Dimension(LARGURA_CAMPO, 44));
+        botaoImportar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        botaoImportar.addActionListener(e -> controller.importar());
+
         card.add(titulo);
         card.add(Box.createVerticalStrut(Espacamentos.ESPACO_1));
         card.add(subtitulo);
@@ -117,6 +124,8 @@ public class CadastroUsuarioView extends JPanel {
         card.add(erroGeral);
         card.add(Box.createVerticalStrut(Espacamentos.ESPACO_1));
         card.add(botaoCadastrar);
+        card.add(Box.createVerticalStrut(Espacamentos.ESPACO_1));
+        card.add(botaoImportar);
 
         add(card, new GridBagConstraints());
     }

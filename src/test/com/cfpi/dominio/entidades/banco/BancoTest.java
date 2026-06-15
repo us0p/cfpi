@@ -48,8 +48,8 @@ class BancoTest {
     }
 
     @Test
-    void criarBancoComNomeContendoDigitosLancaValidacaoException() {
-        assertThrows(ValidacaoException.class, () -> new Banco("Banco123", 237));
+    void criarBancoComNomePontuacaoEDigitosEhValido() {
+        assertDoesNotThrow(() -> new Banco("Banco B3 S.A.", 237));
     }
 
     @Test
@@ -63,8 +63,8 @@ class BancoTest {
     }
 
     @Test
-    void criarBancoComCodigoDe2DigitosLancaValidacaoException() {
-        assertThrows(ValidacaoException.class, () -> new Banco("Banco Teste", 99));
+    void criarBancoComCodigo1NaoLancaExcecao() {
+        assertDoesNotThrow(() -> new Banco("Banco Teste", 1));
     }
 
     @Test
@@ -122,7 +122,7 @@ class BancoTest {
     void setCodigoComValorInvalidoLancaValidacaoExceptionENaoAlteraOCodigo() {
         Banco banco = new Banco("Banco Teste", 237);
 
-        assertThrows(ValidacaoException.class, () -> banco.setCodigo(12));
+        assertThrows(ValidacaoException.class, () -> banco.setCodigo(0));
         assertEquals(237, banco.getCodigo());
     }
 

@@ -1,5 +1,6 @@
 package com.cfpi.apresentacao.cadastro;
 
+import com.cfpi.aplicacao.servicos.ImportExportServico;
 import com.cfpi.apresentacao.shell.AppSession;
 import com.cfpi.apresentacao.shell.Tela;
 import com.cfpi.dominio.entidades.usuario.Usuario;
@@ -16,10 +17,12 @@ public class CadastroUsuarioController {
 
     private final AppSession appSession;
     private final Consumer<Tela> navegador;
+    private final ImportExportServico importExportServico;
 
-    public CadastroUsuarioController(AppSession appSession, Consumer<Tela> navegador) {
+    public CadastroUsuarioController(AppSession appSession, Consumer<Tela> navegador, ImportExportServico importExportServico) {
         this.appSession = appSession;
         this.navegador = navegador;
+        this.importExportServico = importExportServico;
     }
 
     /**
@@ -48,5 +51,9 @@ public class CadastroUsuarioController {
         } catch (ValidacaoException e) {
             return List.of(e.getMessage());
         }
+    }
+
+    public void importar() {
+        importExportServico.importar(appSession, navegador);
     }
 }

@@ -6,6 +6,7 @@ import com.cfpi.dominio.entidades.transacao.Credito;
 import com.cfpi.dominio.entidades.transacao.Debito;
 import com.cfpi.dominio.entidades.transacao.Transacao;
 import com.cfpi.dominio.entidades.usuario.Usuario;
+import com.cfpi.dominio.excecoes.RegraNegocioException;
 import com.cfpi.dominio.excecoes.ValidacaoException;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class TransacoesController {
         try {
             new Debito(descricao, conta, data, Double.parseDouble(valorTexto), categoria, tipo);
             return List.of();
-        } catch (ValidacaoException e) {
+        } catch (ValidacaoException | RegraNegocioException e) {
             return List.of(e.getMessage());
         }
     }
